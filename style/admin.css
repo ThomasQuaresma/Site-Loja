@@ -340,36 +340,68 @@ body {
     background: #e0531b;
 }
 
-/* Responsividade para Ecrãs de Telemóvel */
-@media (max-width: 600px) {
-    .admin-container {
-        margin: 15px auto;
-    }
-
-    .admin-form {
+/* Responsividade Agressiva para Ecrãs Móveis e Tablets */
+@media (max-width: 768px) {
+    /* Empilha o cabeçalho */
+    .admin-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
         padding: 15px;
     }
 
-    .spec-row {
-        flex-direction: column;
-        gap: 12px;
+    .brand-container {
+        align-items: center;
     }
 
+    .btn-back {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Remove bordas laterais para aproveitar 100% da tela */
+    .admin-container {
+        margin: 10px auto;
+        padding: 0;
+        max-width: 100%;
+    }
+
+    .admin-form {
+        padding: 20px 15px;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+
+    /* Empilha os campos de especificação */
+    .spec-row {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 10px;
+    }
+
+    /* Transforma o botão de remover em um botão largo e clicável com o polegar */
     .btn-remove-spec {
-        align-self: flex-end;
-        margin-top: 0;
-        padding: 10px;
+        align-self: stretch;
+        width: 100%;
+        margin-top: 10px;
+        padding: 12px;
         border: 1px solid var(--vermelho-erro);
         border-radius: 4px;
-        font-size: 0.9rem;
-        width: 100%;
+        font-size: 0.95rem;
         justify-content: center;
+        background: #fff5f5;
     }
     
     .btn-remove-spec::before {
         content: "Remover esta medida ";
         font-size: 0.85rem;
         font-weight: bold;
-        margin-right: 5px;
+        margin-right: 8px;
+    }
+
+    /* Ajuste da área de upload para ficar mais compacta */
+    .image-upload-label {
+        padding: 20px 10px;
     }
 }
