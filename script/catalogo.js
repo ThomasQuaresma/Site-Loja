@@ -1,17 +1,32 @@
+// Cole aqui as mesmas credenciais que você usou no admin.js
+const supabaseUrl = 'https://qsdosnxvlzkhgdpbwlbo.supabase.co';
+const supabaseKey = 'sb_publishable_fnQn-RRq6tRXDwTcgZ0--w_zzA32rai';
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
 let todosProdutos = [];
 
-// Carrega os dados iniciais
-fetch('dados/produtos.json')
-    .then(res => res.json())
-    .then(data => {
-        todosProdutos = data.itens || [];
+// Função que busca os dados no banco
+async function carregarCatalogo() {
+    try {
+        // O Supabase permite puxar o produto e todas as suas medidas de uma vez só
+        const { data, error } = await supabase
+            .from('produtos')
+            .select(`
+                *,
+                especificacoes (*)
+            `)
+            .order('created_at', { ascending: false }); // Traz os mais recentes primeiro
+
+        if (error) throw error;
+
+        todosProdutos = data || [];
         renderizarProdutos(todosProdutos);
         configurarBusca();
-    })
-    .catch(error => {
-        console.error("Erro ao carregar os produtos:", error);
-        document.getElementById('catalogoProdutos').innerHTML = '<h3>Erro ao carregar o catálogo.</h3>';
-    });
+    } catch (erro) {
+        console.error("Erro ao carregar o catálogo:", erro);
+        document.getElementById('catalogoProdutos').innerHTML = '<h3>Erro ao carregar o catálogo de produtos.</h3>';
+    }
+}
 
 // Renderiza os cards na tela
 function renderizarProdutos(produtos) {
@@ -26,7 +41,9 @@ function renderizarProdutos(produtos) {
 
     produtos.forEach(prod => {
         let linhasTabela = '';
-        if(prod.especificacoes) {
+        
+        // Verifica se existem especificações atreladas no banco
+        if(prod.especificacoes && prod.especificacoes.length > 0) {
             prod.especificacoes.forEach(spec => {
                 linhasTabela += `
                     <tr>
@@ -40,8 +57,9 @@ function renderizarProdutos(produtos) {
             });
         }
 
-        const imagemExibir = prod.imagem && !prod.imagem.includes('abracadeira.jpg') 
-            ? prod.imagem 
+        // Puxa a imagem do banco ou mostra uma provisória
+        const imagemExibir = prod.imagem_url 
+            ? prod.imagem_url 
             : 'https://via.placeholder.com/350x250.png?text=FOTO+PRODUTO';
 
         htmlFinal += `
@@ -109,7 +127,6 @@ function adicionarAoOrcamento(codigo, titulo) {
     document.getElementById('cartCount').innerText = carrinho.length;
     document.getElementById('cartWidget').style.display = 'flex';
     
-    // Feedback visual do botão
     const btn = event.target;
     btn.style.backgroundColor = '#28a745';
     btn.innerText = '✓';
@@ -119,8 +136,9 @@ function adicionarAoOrcamento(codigo, titulo) {
     }, 1000);
 }
 
-// Função temporária de finalização para testar o fluxo
 function abrirOrcamento() {
-    console.log("Itens no orçamento:", carrinho);
-    alert(`Você possui ${carrinho.length} itens no orçamento. A integração com o WhatsApp será feita aqui.`);
+    alert(`Você possui ${carrinho.length} itens no orçamento. A integração com o WhatsApp será feita na sequência.`);
 }
+
+// Inicializa a página
+document.addEventListener("DOMContentLoaded", carregarCatalogo);

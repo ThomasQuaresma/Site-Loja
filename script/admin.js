@@ -1,4 +1,6 @@
-console.log("🟢 admin.js carregado com sucesso!");
+const supabaseUrl = 'https://qsdosnxvlzkhgdpbwlbo.supabase.co';
+const supabaseKey = 'sb_publishable_fnQn-RRq6tRXDwTcgZ0--w_zzA32rai';
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("⚙️ Iniciando configurações da página...");
@@ -98,8 +100,88 @@ function configurarUploadFoto() {
     });
 }
 
-function processarSubmissao(event) {
+async function processarSubmissao(event) {
     event.preventDefault();
-    console.log("🚀 Iniciando gravação do produto...");
-    /* A lógica de submissão continua igual */
+    
+    const btnSubmit = event.target.querySelector('button[type="submit"]');
+    btnSubmit.innerText = "A gravar...";
+    btnSubmit.disabled = true;
+
+    const titulo = document.getElementById("titulo").value;
+    const categoria = document.getElementById("categoria").value;
+    const inputImagem = document.getElementById("imagem");
+    
+    const linhasSpecs = document.querySelectorAll(".spec-row");
+    const especificacoes = [];
+
+    linhasSpecs.forEach(linha => {
+        especificacoes.push({
+            codigo: linha.querySelector(".input-codigo").value,
+            descricao: linha.querySelector(".input-descricao").value,
+            embalagem: linha.querySelector(".input-embalagem").value
+        });
+    });
+
+    if (especificacoes.length === 0) {
+        alert("Adicione pelo menos uma especificação técnica.");
+        btnSubmit.innerText = "Gravar Produto";
+        btnSubmit.disabled = false;
+        return;
+    }
+
+    try {
+        let imagemUrl = null;
+
+        // 1. Envia a Foto para o Storage
+        if (inputImagem.files.length > 0) {
+            const ficheiro = inputImagem.files[0];
+            const nomeFicheiro = `${Date.now()}_${ficheiro.name.replace(/\s+/g, '')}`;
+            
+            const { data: imgData, error: imgError } = await supabase.storage
+                .from('imagens_catalogo')
+                .upload(nomeFicheiro, ficheiro);
+                
+            if (imgError) throw imgError;
+            
+            const { data: publicUrlData } = supabase.storage
+                .from('imagens_catalogo')
+                .getPublicUrl(nomeFicheiro);
+                
+            imagemUrl = publicUrlData.publicUrl;
+        }
+
+        // 2. Grava o Produto e pega o ID
+        const { data: produtoData, error: produtoError } = await supabase
+            .from('produtos')
+            .insert([{ titulo: titulo, categoria: categoria, imagem_url: imagemUrl }])
+            .select();
+
+        if (produtoError) throw produtoError;
+        
+        const produtoId = produtoData[0].id;
+
+        // 3. Grava as Especificações com o ID do Produto
+        const especificacoesComId = especificacoes.map(spec => ({
+            ...spec,
+            produto_id: produtoId
+        }));
+
+        const { error: specError } = await supabase
+            .from('especificacoes')
+            .insert(especificacoesComId);
+
+        if (specError) throw specError;
+
+        alert("Produto cadastrado com sucesso!");
+        document.getElementById("formProduto").reset();
+        document.getElementById("imagePreview").style.display = "none";
+        document.querySelector(".image-upload-label").style.display = "flex";
+        
+    } catch (erro) {
+        console.error("Erro na gravação:", erro);
+        alert("Ocorreu um erro ao salvar: " + erro.message);
+    } finally {
+        btnSubmit.innerText = "Gravar Produto";
+        btnSubmit.disabled = false;
+    }
 }
