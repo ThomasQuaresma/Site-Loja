@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precisa - Catálogo Técnico Elétrico</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style/style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-area">
+            <div class="brand-container">
+                <span class="brand-main">PRECISA</span>
+                <span class="brand-sub">Elétrica • Hidráulica • Eletrônica</span>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <div class="search-box">
+                <input type="text" id="inputBusca" placeholder="Buscar por código ou nome...">
+            </div>
+            <ul class="main-menu-lista">
+                <li><a href="index.html">Produtos</a></li>
+                <li><a href="about.html">A Empresa</a></li>
+                <li><a href="contact.html">Localização</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="category-bar">
+        <button class="btn-filter active" onclick="filtrarCategoria('TODOS')">Todos</button>
+        <button class="btn-filter" onclick="filtrarCategoria('CABOS')">Cabos</button>
+        <button class="btn-filter" onclick="filtrarCategoria('TUBOS')">Tubos</button>
+        <button class="btn-filter" onclick="filtrarCategoria('MÓDULOS')">Módulos</button>
+        <button class="btn-filter" onclick="filtrarCategoria('ILUMINAÇÃO')">Iluminação</button>
+        <button class="btn-filter" onclick="filtrarCategoria('FERRAMENTAS')">Ferramentas</button>
+    </div>
+
+    <div id="cartWidget" class="cart-widget" style="display: none;">
+        <span id="cartCount">0</span> itens no orçamento
+        <button onclick="abrirOrcamento()">Finalizar Solicitação</button>
+    </div>
+
+    <main class="main-content">
+        <div class="produtos-tecnicos-grid" id="catalogoProdutos">
+            <h3 class="loading-msg">Carregando especificações técnicas...</h3>
+        </div>
+
+        <div id="imageModal" class="modal">
+            <span class="close-modal">&times;</span>
+            <img class="modal-content" id="expandedImg">
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p>&copy; 2026 Precisa Elétrica. Catálogo online para fins de consulta técnica e orçamentos.</p>
+        </div>
+    </footer>
+
+    <script src="script/catalogo.js"></script>
+</body>
+</html>

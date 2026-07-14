@@ -1,0 +1,48 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Configuração de onde as fotos serão salvas
+media_folder: "imagem"
+public_folder: "imagem"
+
+collections:
+  - name: "catalogo_precisa"
+    label: "Gerenciar Catálogo Precisa"
+    editor:
+      preview: false
+    files:
+      - label: "Lista de Produtos Técnicos"
+        name: "produtos"
+        file: "dados/produtos.json"
+        fields:
+          - label: "Nossos Produtos"
+            name: "itens"
+            widget: "list"
+            # O summary ajuda a identificar o produto na lista do painel
+            summary: '{{fields.categoria}} - {{fields.titulo}}'
+            fields:
+              - label: "Categoria"
+                name: "categoria"
+                widget: "select"
+                options: 
+                  - { label: "CABOS", value: "CABOS" }
+                  - { label: "TUBOS", value: "TUBOS" }
+                  - { label: "MÓDULOS", value: "MÓDULOS" }
+                  - { label: "ILUMINAÇÃO", value: "ILUMINAÇÃO" }
+                  - { label: "FERRAMENTAS", value: "FERRAMENTAS" }
+                  - { label: "DIVERSOS", value: "DIVERSOS" }
+                default: "DIVERSOS"
+
+              - {label: "Nome do Produto", name: "titulo", widget: "string"}
+              - {label: "Foto do Produto", name: "imagem", widget: "image"}
+              
+              - label: "Tabela de Especificações Técnicas"
+                name: "especificacoes"
+                widget: "list"
+                # Mostra o código e a medida no resumo da lista para facilitar o preenchimento
+                summary: 'Cod: {{fields.codigo}} | {{fields.descricao}}'
+                fields:
+                  - {label: "Código", name: "codigo", widget: "string"}
+                  - {label: "Descrição / Medida", name: "descricao", widget: "string"}
+                  - {label: "Embalagem (Ex: PT 1, UN, CX)", name: "embalagem", widget: "string"}

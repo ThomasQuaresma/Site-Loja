@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precisa - Painel Administrativo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style/admin.css">
+</head>
+<body>
+    <header class="admin-header">
+        <div class="brand-container">
+            <span class="brand-main">PRECISA</span>
+            <span class="brand-sub">Painel de Gestão</span>
+        </div>
+        <a href="index.html" class="btn-back">Ver Catálogo</a>
+    </header>
+
+    <main class="admin-container">
+        <form id="formProduto" class="admin-form">
+            <h1 class="form-title">Novo Produto</h1>
+
+            <section class="form-section">
+                <div class="form-group">
+                    <label for="titulo">Título do Produto</label>
+                    <input type="text" id="titulo" required placeholder="Ex: Cabo Flexível 750V">
+                </div>
+
+                <div class="form-group">
+                    <label for="categoria">Categoria</label>
+                    <select id="categoria" required>
+                        <option value="" disabled selected>Selecione uma categoria...</option>
+                        <option value="CABOS">Cabos</option>
+                        <option value="TUBOS">Tubos</option>
+                        <option value="MÓDULOS">Módulos</option>
+                        <option value="ILUMINAÇÃO">Iluminação</option>
+                        <option value="FERRAMENTAS">Ferramentas</option>
+                        <option value="DIVERSOS">Diversos</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Foto do Produto</label>
+                    <div class="image-upload-container">
+                        <label for="imagem" class="image-upload-label">
+                            <span class="upload-icon">📷</span>
+                            <span class="upload-text">Tirar foto ou escolher ficheiro</span>
+                        </label>
+                        <input type="file" id="imagem" accept="image/*" class="image-input">
+                        <div class="image-preview" id="imagePreview" style="display: none;">
+                            <img src="" alt="Antevisão da Imagem" id="previewImg">
+                            <button type="button" class="btn-remove-image" id="btnRemoveImage">Remover Foto</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="form-section">
+                <h2 class="section-title">Especificações Técnicas</h2>
+                <p class="section-subtitle">Adicione as medidas, códigos e embalagens deste produto.</p>
+                
+                <div id="especificacoesContainer" class="specs-list">
+                    </div>
+
+                <button type="button" class="btn-add-spec" onclick="adicionarLinhaEspecificacao()">
+                    <span>+</span> Adicionar Medida ou Código
+                </button>
+            </section>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">Gravar Produto</button>
+            </div>
+        </form>
+    </main>
+
+    <script src="script/admin.js"></script>
+</body>
+</html>
