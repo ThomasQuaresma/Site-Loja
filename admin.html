@@ -6,6 +6,12 @@
     <title>Precisa - Painel Administrativo</title>
     <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style/admin.css">
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e293b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Precisa Admin">
 </head>
 <body>
     <header class="admin-header">
@@ -71,11 +77,29 @@
                 <button type="submit" class="btn-submit">Gravar Produto</button>
             </div>
         </form>
+        <section class="form-section" style="margin-top: 40px;">
+            <h2 class="section-title">Produtos Cadastrados</h2>
+            <p class="section-subtitle">Clique no botão "Editar" ao lado do produto para alterar suas informações ou medidas.</p>
+            
+            <div id="listaProdutosAdmin" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                <p>A carregar produtos...</p>
+            </div>
+            
+            <div style="margin-top: 20px; text-align: center;">
+                <button type="button" id="btnCancelarEdicao" class="btn-remove-image" style="display: none; width: auto; padding: 10px 20px; margin: 0 auto;">Cancelar Edição e Limpar Formulário</button>
+            </div>
+        </section>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./script/admin.js"></script>
-    <script src="script/admin.js"></script>
-    <script src="./script/catalogo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('✅ App pronta para instalar no telemóvel!'))
+                    .catch(err => console.error('❌ Erro no registo do App:', err));
+            });
+        }
+    </script>
 </body>
 </html>

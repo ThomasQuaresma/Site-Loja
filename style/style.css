@@ -255,3 +255,42 @@ body {
     .produtos-tecnicos-grid { grid-template-columns: 1fr; }
     .cart-widget { bottom: 10px; right: 10px; left: 10px; justify-content: space-between; border-radius: 8px; }
 }
+
+/* Cria a barra de rolagem na área da tabela e trava o topo */
+.product-data-full {
+    max-height: 220px; 
+    overflow-y: auto;  
+    padding-top: 0 !important; /* Remove o buraco transparente acima do cabeçalho */
+}
+
+/* Previne bugs visuais do sticky e tira margens do topo */
+.tabela-tecnica {
+    border-collapse: separate; 
+    border-spacing: 0;
+    margin-top: 0 !important;
+}
+
+.tabela-tecnica thead th {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff !important; 
+    z-index: 10; 
+    border-bottom: 2px solid var(--laranja-precisa, #ff6b00); 
+    background-clip: padding-box; /* Cobre o fundo de forma sólida */
+}
+
+/* Estiliza a barra de rolagem para ficar mais fina e moderna (opcional) */
+.product-data-full::-webkit-scrollbar {
+    width: 6px;
+}
+.product-data-full::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+.product-data-full::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+.product-data-full::-webkit-scrollbar-thumb:hover {
+    background: var(--laranja-precisa, #ff6b00);
+}

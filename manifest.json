@@ -1,0 +1,21 @@
+{
+  "name": "Precisa Admin",
+  "short_name": "Precisa",
+  "description": "Painel de Gestão - Catálogo Precisa",
+  "start_url": "./admin.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e293b",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192x192.png?text=P",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/512x512.png?text=P",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
