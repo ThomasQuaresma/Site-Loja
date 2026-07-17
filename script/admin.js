@@ -2,8 +2,8 @@ const supabaseUrl = 'https://qsdosnxvlzkhgdpbwlbo.supabase.co';
 const supabaseKey = 'sb_publishable_fnQn-RRq6tRXDwTcgZ0--w_zzA32rai';
 
 let clienteDB = null;
+let produtosCarregados = [];
 
-// Variáveis de controle de edição
 let produtoIdEmEdicao = null;
 let imagemUrlAntiga = null;
 
@@ -11,17 +11,19 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
         if (window.supabase) {
             clienteDB = window.supabase.createClient(supabaseUrl, supabaseKey);
-            carregarListaAdmin(); // Carrega a lista de produtos existentes
+            carregarListaAdmin(); 
         }
     } catch (erro) {
         console.error("Erro na inicialização:", erro);
     }
 
-    adicionarLinhaEspecificacao();
+    adicionarLinhaEspecificacaoBlindada('', '', '');
     configurarUploadFoto();
     
     const btnAddSpec = document.getElementById("btnAddSpec");
-    if (btnAddSpec) btnAddSpec.addEventListener("click", adicionarLinhaEspecificacao);
+    if (btnAddSpec) {
+        btnAddSpec.addEventListener("click", () => adicionarLinhaEspecificacaoBlindada('', '', ''));
+    }
     
     const containerSpecs = document.getElementById("especificacoesContainer");
     if (containerSpecs) {
@@ -32,17 +34,26 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    const containerLista = document.getElementById("listaProdutosAdmin");
+    if (containerLista) {
+        containerLista.addEventListener("click", function(event) {
+            const btnEditar = event.target.closest(".btn-editar-produto");
+            if (btnEditar) {
+                const idDoProduto = btnEditar.getAttribute("data-id");
+                prepararEdicao(idDoProduto);
+            }
+        });
+    }
+
     const formProduto = document.getElementById("formProduto");
     if (formProduto) formProduto.addEventListener("submit", processarSubmissao);
 
-    // Botão para cancelar a edição
     const btnCancelarEdicao = document.getElementById("btnCancelarEdicao");
     if (btnCancelarEdicao) {
         btnCancelarEdicao.addEventListener("click", limparFormulario);
     }
 });
 
-// --- NOVA FUNÇÃO: CARREGAR LISTA PARA EDIÇÃO ---
 async function carregarListaAdmin() {
     if (!clienteDB) return;
     const container = document.getElementById("listaProdutosAdmin");
@@ -55,35 +66,61 @@ async function carregarListaAdmin() {
 
         if (error) throw error;
 
+        produtosCarregados = produtos; 
+        container.innerHTML = '';
+
         if (produtos.length === 0) {
             container.innerHTML = '<p>Nenhum produto cadastrado ainda.</p>';
             return;
         }
 
-        let html = '';
         produtos.forEach(prod => {
-            html += `
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: #fafafa;">
-                <div>
-                    <strong>${prod.titulo}</strong> <span style="font-size: 0.85rem; color: #666;">(${prod.categoria})</span>
-                    <br>
-                    <span style="font-size: 0.85rem;">${prod.especificacoes ? prod.especificacoes.length : 0} medida(s)</span>
-                </div>
-                <button type="button" class="btn-submit" style="width: auto; padding: 8px 15px; font-size: 0.9rem;" onclick='prepararEdicao(${JSON.stringify(prod)})'>
-                    Editar
-                </button>
-            </div>`;
+            const divItem = document.createElement("div");
+            divItem.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: #fafafa;";
+
+            const divInfo = document.createElement("div");
+            
+            const tituloProd = document.createElement("strong");
+            tituloProd.textContent = prod.titulo;
+            
+            const catProd = document.createElement("span");
+            catProd.style.cssText = "font-size: 0.85rem; color: #666;";
+            catProd.textContent = ` (${prod.categoria})`;
+            
+            const quebraLinha = document.createElement("br");
+            
+            const qtdMedidas = document.createElement("span");
+            qtdMedidas.style.cssText = "font-size: 0.85rem;";
+            qtdMedidas.textContent = `${prod.especificacoes ? prod.especificacoes.length : 0} medida(s)`;
+
+            divInfo.appendChild(tituloProd);
+            divInfo.appendChild(catProd);
+            divInfo.appendChild(quebraLinha);
+            divInfo.appendChild(qtdMedidas);
+
+            const btnEditar = document.createElement("button");
+            btnEditar.type = "button";
+            btnEditar.className = "btn-submit btn-editar-produto";
+            btnEditar.setAttribute("data-id", prod.id);
+            btnEditar.style.cssText = "width: auto; padding: 8px 15px; font-size: 0.9rem;";
+            btnEditar.textContent = "Editar";
+
+            divItem.appendChild(divInfo);
+            divItem.appendChild(btnEditar);
+            
+            container.appendChild(divItem);
         });
         
-        container.innerHTML = html;
     } catch (erro) {
         console.error("Erro ao carregar lista:", erro);
         container.innerHTML = '<p>Erro ao carregar os produtos.</p>';
     }
 }
 
-// --- NOVA FUNÇÃO: PREENCHER FORMULÁRIO COM DADOS ANTIGOS ---
-window.prepararEdicao = function(produto) {
+function prepararEdicao(idProduto) {
+    const produto = produtosCarregados.find(p => String(p.id) === String(idProduto));
+    if (!produto) return;
+
     produtoIdEmEdicao = produto.id;
     imagemUrlAntiga = produto.imagem_url;
 
@@ -91,7 +128,6 @@ window.prepararEdicao = function(produto) {
     document.getElementById("categoria").value = produto.categoria;
     document.querySelector('.form-title').innerText = "Editar Produto: " + produto.titulo;
     
-    // Atualiza a interface da foto
     const imagePreview = document.getElementById("imagePreview");
     const previewImg = document.getElementById("previewImg");
     const labelUpload = document.querySelector(".image-upload-label");
@@ -106,40 +142,20 @@ window.prepararEdicao = function(produto) {
         labelUpload.style.display = "flex";
     }
 
-    // Recria as linhas de especificações
     const containerSpecs = document.getElementById("especificacoesContainer");
     containerSpecs.innerHTML = "";
     
     if (produto.especificacoes && produto.especificacoes.length > 0) {
         produto.especificacoes.forEach(spec => {
-            const novaLinha = document.createElement("div");
-            novaLinha.className = "spec-row";
-            novaLinha.innerHTML = `
-                <div class="spec-field">
-                    <label>Código</label>
-                    <input type="text" value="${spec.codigo || ''}" required class="input-codigo">
-                </div>
-                <div class="spec-field">
-                    <label>Descrição / Medida</label>
-                    <input type="text" value="${spec.descricao || ''}" required class="input-descricao">
-                </div>
-                <div class="spec-field">
-                    <label>Embalagem</label>
-                    <input type="text" value="${spec.embalagem || ''}" required class="input-embalagem">
-                </div>
-                <button type="button" class="btn-remove-spec">🗑️</button>
-            `;
-            containerSpecs.appendChild(novaLinha);
+            adicionarLinhaEspecificacaoBlindada(spec.codigo, spec.descricao, spec.embalagem);
         });
     } else {
-        adicionarLinhaEspecificacao();
+        adicionarLinhaEspecificacaoBlindada('', '', '');
     }
 
-    // Mostra o botão de cancelar edição e muda o texto do botão principal
     document.getElementById("btnCancelarEdicao").style.display = "block";
     document.querySelector('#formProduto button[type="submit"]').innerText = "Atualizar Produto";
     
-    // Rola a tela para o topo
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -156,23 +172,30 @@ function limparFormulario() {
     
     const container = document.getElementById("especificacoesContainer");
     container.innerHTML = "";
-    adicionarLinhaEspecificacao();
+    adicionarLinhaEspecificacaoBlindada('', '', '');
     
     document.getElementById("btnCancelarEdicao").style.display = "none";
     document.querySelector('#formProduto button[type="submit"]').innerText = "Gravar Produto";
 }
 
-// ... (Funções originais de adicionar linha e configurar upload permanecem inalteradas) ...
-function adicionarLinhaEspecificacao() {
+function adicionarLinhaEspecificacaoBlindada(codigoValor, descricaoValor, embalagemValor) {
     const container = document.getElementById("especificacoesContainer");
     if (!container) return;
+    
     const novaLinha = document.createElement("div");
     novaLinha.className = "spec-row";
+    
     novaLinha.innerHTML = `
         <div class="spec-field"><label>Código</label><input type="text" required class="input-codigo"></div>
         <div class="spec-field"><label>Descrição / Medida</label><input type="text" required class="input-descricao"></div>
         <div class="spec-field"><label>Embalagem</label><input type="text" required class="input-embalagem"></div>
-        <button type="button" class="btn-remove-spec">🗑️</button>`;
+        <button type="button" class="btn-remove-spec">🗑️</button>
+    `;
+    
+    novaLinha.querySelector(".input-codigo").value = codigoValor || '';
+    novaLinha.querySelector(".input-descricao").value = descricaoValor || '';
+    novaLinha.querySelector(".input-embalagem").value = embalagemValor || '';
+    
     container.appendChild(novaLinha);
 }
 
@@ -200,12 +223,10 @@ function configurarUploadFoto() {
         previewImg.src = "";
         imagePreview.style.display = "none";
         labelUpload.style.display = "flex";
-        // Se remover a foto durante a edição, limpa a URL antiga para forçar a deleção na nuvem
         if (produtoIdEmEdicao) imagemUrlAntiga = null; 
     });
 }
 
-// --- LÓGICA ATUALIZADA: INSERIR OU ATUALIZAR ---
 async function processarSubmissao(event) {
     event.preventDefault();
     if (!clienteDB) return alert("Erro de ligação ao banco.");
@@ -235,21 +256,28 @@ async function processarSubmissao(event) {
     }
 
     try {
-        let imagemUrl = imagemUrlAntiga; // Mantém a foto antiga se nenhuma nova for enviada
+        let imagemUrl = imagemUrlAntiga;
 
-        // Se uma FOTO NOVA foi selecionada, faz o upload
         if (inputImagem.files.length > 0) {
             const ficheiro = inputImagem.files[0];
-            const nomeFicheiro = `${Date.now()}_${ficheiro.name.replace(/\s+/g, '')}`;
+            
+            const tituloLimpo = titulo
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-zA-Z0-9]/g, '_')
+                .toLowerCase();
+            
+            const extensao = ficheiro.name.split('.').pop();
+            const nomeFicheiro = `${tituloLimpo}_${Date.now()}.${extensao}`;
+
             const { error: imgError } = await clienteDB.storage.from('imagens_catalogo').upload(nomeFicheiro, ficheiro);
             if (imgError) throw imgError;
+            
             const { data: publicUrlData } = clienteDB.storage.from('imagens_catalogo').getPublicUrl(nomeFicheiro);
             imagemUrl = publicUrlData.publicUrl;
         }
 
         let idTratado = produtoIdEmEdicao;
 
-        // SE FOR EDIÇÃO (UPDATE)
         if (produtoIdEmEdicao) {
             const { error: produtoError } = await clienteDB
                 .from('produtos')
@@ -257,10 +285,8 @@ async function processarSubmissao(event) {
                 .eq('id', produtoIdEmEdicao);
             if (produtoError) throw produtoError;
 
-            // Apaga as medidas antigas para inserir as novas limpas (evita duplicação)
             await clienteDB.from('especificacoes').delete().eq('produto_id', produtoIdEmEdicao);
         } 
-        // SE FOR NOVO CADASTRO (INSERT)
         else {
             const { data: produtoData, error: produtoError } = await clienteDB
                 .from('produtos')
@@ -270,7 +296,6 @@ async function processarSubmissao(event) {
             idTratado = produtoData[0].id;
         }
 
-        // Grava as novas medidas
         const especificacoesComId = especificacoes.map(spec => ({ ...spec, produto_id: idTratado }));
         const { error: specError } = await clienteDB.from('especificacoes').insert(especificacoesComId);
         if (specError) throw specError;
@@ -278,7 +303,7 @@ async function processarSubmissao(event) {
         alert(produtoIdEmEdicao ? "Produto atualizado com sucesso!" : "Produto cadastrado com sucesso!");
         
         limparFormulario();
-        carregarListaAdmin(); // Atualiza a lista na tela
+        carregarListaAdmin(); 
         
     } catch (erro) {
         console.error("Erro na gravação:", erro);

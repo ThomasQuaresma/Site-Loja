@@ -38,9 +38,11 @@
                         <option value="" disabled selected>Selecione uma categoria...</option>
                         <option value="CABOS">Cabos</option>
                         <option value="TUBOS">Tubos</option>
+                        <option value="ELETRODUTO">Eletroduto</option>
                         <option value="MÓDULOS">Módulos</option>
                         <option value="ILUMINAÇÃO">Iluminação</option>
                         <option value="FERRAMENTAS">Ferramentas</option>
+                        <option value="CONDULETES">Conduletes</option>
                         <option value="DIVERSOS">Diversos</option>
                     </select>
                 </div>
@@ -93,6 +95,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./script/admin.js"></script>
     <script>
+        /* Desativado temporariamente para evitar erro de sintaxe
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
@@ -100,6 +103,7 @@
                     .catch(err => console.error('❌ Erro no registo do App:', err));
             });
         }
+        */
     </script>
 </body>
 </html>
