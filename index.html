@@ -28,15 +28,9 @@
         </nav>
     </header>
 
-    <div class="category-bar">
-        <button class="btn-filter active" onclick="filtrarCategoria('TODOS')">Todos</button>
-        <button class="btn-filter" onclick="filtrarCategoria('CABOS')">Cabos</button>
-        <button class="btn-filter" onclick="filtrarCategoria('TUBOS')">Tubos</button>
-        <button class="btn-filter" onclick="filtrarCategoria('MÓDULOS')">Módulos</button>
-        <button class="btn-filter" onclick="filtrarCategoria('ILUMINAÇÃO')">Iluminação</button>
-        <button class="btn-filter" onclick="filtrarCategoria('FERRAMENTAS')">Ferramentas</button>
-        <button class="btn-filter" onclick="filtrarCategoria('CONDULETES')">Conduletes</button>
-        <button class="btn-filter" onclick="filtrarCategoria('ELETRODUTO')">Eletroduto</button>
+    <div class="category-bar" id="categoryBar">
+        <button class="btn-filter active" onclick="filtrarCategoria('TODOS', this)">Todos</button>
+        <!-- Os botões das categorias serão injetados automaticamente aqui pelo JavaScript -->
     </div>
 
     <div id="cartWidget" class="cart-widget" style="display: none;">

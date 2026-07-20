@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
         if (window.supabase) {
             clienteDB = window.supabase.createClient(supabaseUrl, supabaseKey);
-            carregarListaAdmin(); 
+            inicializarSistema(); 
         }
     } catch (erro) {
         console.error("Erro na inicialização:", erro);
@@ -52,7 +52,78 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnCancelarEdicao) {
         btnCancelarEdicao.addEventListener("click", limparFormulario);
     }
+
+    const btnCriarCategoria = document.getElementById("btnCriarCategoria");
+    if (btnCriarCategoria) {
+        btnCriarCategoria.addEventListener("click", criarNovaCategoria);
+    }
 });
+
+// Garante que as categorias carreguem ANTES dos produtos para a edição funcionar perfeitamente
+async function inicializarSistema() {
+    await carregarCategorias();
+    await carregarListaAdmin();
+}
+
+async function carregarCategorias() {
+    if (!clienteDB) return;
+    const select = document.getElementById("categoria");
+    
+    try {
+        const { data, error } = await clienteDB
+            .from('categorias')
+            .select('*')
+            .order('nome', { ascending: true });
+
+        if (error) throw error;
+
+        select.innerHTML = '<option value="" disabled selected>Selecione uma categoria...</option>';
+        
+        data.forEach(cat => {
+            const option = document.createElement("option");
+            option.value = cat.nome;
+            option.textContent = cat.nome;
+            select.appendChild(option);
+        });
+    } catch (erro) {
+        console.error("Erro ao carregar categorias:", erro);
+        select.innerHTML = '<option value="" disabled selected>Erro ao carregar categorias</option>';
+    }
+}
+
+async function criarNovaCategoria() {
+    const input = document.getElementById("inputNovaCategoria");
+    const btn = document.getElementById("btnCriarCategoria");
+    
+    // Converte tudo para maiúsculo para manter o padrão visual do seu banco
+    let nomeCategoria = input.value.trim().toUpperCase();
+
+    if (!nomeCategoria) {
+        alert("Por favor, digite o nome da nova categoria.");
+        return;
+    }
+
+    btn.innerText = "A gravar...";
+    btn.disabled = true;
+
+    try {
+        const { error } = await clienteDB.from('categorias').insert([{ nome: nomeCategoria }]);
+        if (error) throw error;
+
+        input.value = "";
+        alert("Categoria adicionada com sucesso!");
+        
+        // Atualiza a lista suspensa na mesma hora sem precisar recarregar a página
+        await carregarCategorias();
+        
+    } catch (erro) {
+        console.error("Erro ao gravar categoria:", erro);
+        alert("Erro ao criar categoria: " + erro.message);
+    } finally {
+        btn.innerText = "Adicionar Rápido";
+        btn.disabled = false;
+    }
+}
 
 async function carregarListaAdmin() {
     if (!clienteDB) return;

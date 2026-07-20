@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
         if (window.supabase) {
             clienteDB = window.supabase.createClient(supabaseUrl, supabaseKey);
-            carregarCatalogo();
+            inicializarCatalogo();
         } else {
             document.getElementById('catalogoProdutos').innerHTML = '<h3>Erro de ligação. Verifique a sua conexão ou desative bloqueadores.</h3>';
         }
@@ -17,7 +17,41 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-async function carregarCatalogo() {
+// Carrega categorias e produtos de forma sequencial
+async function inicializarCatalogo() {
+    await carregarCategorias();
+    await carregarProdutos();
+}
+
+async function carregarCategorias() {
+    try {
+        const { data, error } = await clienteDB
+            .from('categorias')
+            .select('*')
+            .order('nome', { ascending: true });
+
+        if (error) throw error;
+
+        const categoryBar = document.getElementById('categoryBar');
+
+        data.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-filter';
+            
+            // Converte "FERRAMENTAS" para "Ferramentas" (padrão visual mais agradável)
+            btn.textContent = cat.nome.charAt(0).toUpperCase() + cat.nome.slice(1).toLowerCase();
+            
+            // Atribui o evento de clique passando o nome oficial em maiúsculo para o filtro funcionar
+            btn.onclick = function() { filtrarCategoria(cat.nome, this); };
+            
+            categoryBar.appendChild(btn);
+        });
+    } catch (erro) {
+        console.error("Erro ao carregar categorias dinâmicas:", erro);
+    }
+}
+
+async function carregarProdutos() {
     try {
         const { data, error } = await clienteDB
             .from('produtos')
@@ -91,9 +125,13 @@ function renderizarProdutos(produtos) {
     container.innerHTML = htmlFinal;
 }
 
-function filtrarCategoria(categoria) {
+// A função de filtro agora recebe o botão exato que foi clicado para alterar as cores
+function filtrarCategoria(categoria, elementoBotao) {
     document.querySelectorAll('.btn-filter').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
+    
+    if (elementoBotao) {
+        elementoBotao.classList.add('active');
+    }
 
     if(categoria === 'TODOS') {
         renderizarProdutos(todosProdutos);
