@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Mockup Portfólio - Precisa Elétrica</title>
+    <style>
+        /* Fundo escuro para destacar a "folha de papel" */
+        body { 
+            background-color: #e2e8f0; 
+            display: flex; 
+            justify-content: center; 
+            padding: 40px; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+        
+        /* Formato e estilo da página A4 */
+        .folha-a4 { 
+            background: white; 
+            width: 210mm; 
+            min-height: 297mm; 
+            padding: 25mm; 
+            box-sizing: border-box; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
+            display: flex; 
+            flex-direction: column; 
+        }
+        
+        /* Cabeçalho */
+        .cabecalho { 
+            text-align: center; 
+            border-bottom: 4px solid #ea580c; 
+            padding-bottom: 25px; 
+            margin-bottom: 40px; 
+        }
+        .logo-texto { 
+            font-size: 3rem; 
+            font-weight: 800; 
+            color: #1e293b; 
+            margin: 0; 
+            letter-spacing: -1px;
+        }
+        .subtitulo { 
+            color: #ea580c; 
+            font-size: 1.3rem; 
+            font-weight: 700; 
+            margin-top: 8px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+        }
+        
+        /* Conteúdo Principal */
+        .conteudo { flex-grow: 1; }
+        h2 { color: #1e293b; font-size: 2rem; margin-bottom: 20px; }
+        p.destaque { color: #475569; font-size: 1.2rem; line-height: 1.7; margin-bottom: 40px; }
+        
+        /* Cards de Categorias */
+        .grid-categorias { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 50px; 
+            text-align: center; 
+            gap: 15px;
+        }
+        .categoria-card { 
+            background: #f8fafc; 
+            border: 1px solid #e2e8f0; 
+            padding: 25px 15px; 
+            border-radius: 8px; 
+            flex: 1;
+        }
+        .categoria-card h3 { color: #1e293b; font-size: 1.3rem; margin-bottom: 10px; margin-top: 0; }
+        .categoria-card p { font-size: 0.95rem; color: #64748b; margin-bottom: 0; line-height: 1.5; }
+        
+        /* Bloco do Catálogo Digital e QR Code */
+        .bloco-qr { 
+            background: #1e293b; 
+            color: white; 
+            border-radius: 12px; 
+            padding: 40px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            margin-top: auto; 
+            margin-bottom: 30px;
+            border-left: 8px solid #ea580c;
+        }
+        .qr-texto { width: 65%; }
+        .qr-texto h3 { font-size: 1.8rem; margin-bottom: 15px; color: white; margin-top: 0;}
+        .qr-texto p { color: #cbd5e1; font-size: 1.1rem; margin-bottom: 0; line-height: 1.6; }
+        
+        .qr-espaco { 
+            width: 160px; 
+            height: 160px; 
+            background: white; 
+            border-radius: 8px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: #ea580c; 
+            font-weight: bold; 
+            text-align: center; 
+            border: 4px dashed #cbd5e1; 
+            font-size: 0.9rem;
+        }
+        
+        /* Rodapé */
+        .rodape { 
+            text-align: center; 
+            color: #64748b; 
+            font-size: 1rem; 
+            border-top: 1px solid #e2e8f0; 
+            padding-top: 20px; 
+        }
+        .rodape strong { color: #1e293b; }
+    </style>
+</head>
+<body>
+    <div class="folha-a4">
+        
+        <div class="cabecalho">
+            <h1 class="logo-texto">PRECISA ELÉTRICA</h1>
+            <div class="subtitulo">Sua Base de Suprimentos</div>
+        </div>
+        
+        <div class="conteudo">
+            <h2>Pronta entrega para a sua obra</h2>
+            <p class="destaque">Trabalhamos com as melhores marcas do mercado para garantir agilidade e procedência. Da infraestrutura ao acabamento, somos o parceiro definitivo para profissionais e construtoras.</p>
+            
+            <div class="grid-categorias">
+                <div class="categoria-card">
+                    <h3>⚡ Elétrica</h3>
+                    <p>Fios, cabos normatizados, eletrodutos, quadros de distribuição e disjuntores.</p>
+                </div>
+                <div class="categoria-card">
+                    <h3>💧 Hidráulica</h3>
+                    <p>Tubos soldáveis, conexões, linha de esgoto, registros e acabamentos.</p>
+                </div>
+                <div class="categoria-card">
+                    <h3>🔌 Eletrônica</h3>
+                    <p>Cabos de rede, componentes para CFTV, interfonia e acessórios de segurança.</p>
+                </div>
+            </div>
+
+            <div class="bloco-qr">
+                <div class="qr-texto">
+                    <h3>O Catálogo na Palma da Mão</h3>
+                    <p>Acesse nosso sistema online atualizado em tempo real. Verifique especificações técnicas, códigos de fabricantes e monte seu pedido direto do canteiro de obras, sem perder tempo.</p>
+                </div>
+                <div class="qr-espaco">
+                    COLE O<br>QR CODE<br>AQUI
+                </div>
+            </div>
+        </div>
+
+        <div class="rodape">
+            <strong>precisaeletrica.com.br</strong> | contato@precisaeletrica.com.br<br>
+            Atendimento especializado B2B
+        </div>
+        
+    </div>
+</body>
+</html>
