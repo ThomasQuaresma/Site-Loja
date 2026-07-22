@@ -405,3 +405,92 @@ body {
         padding: 20px 10px;
     }
 }
+
+/* =========================================
+   TELA DE LOGIN ADMIN
+   ========================================= */
+
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 40px 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+}
+
+.login-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1e293b;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.form-group-login {
+    margin-bottom: 20px;
+}
+
+.form-group-login label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #475569;
+    font-size: 0.9rem;
+}
+
+.form-group-login input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #334155;
+    background-color: #f8fafc;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.form-group-login input:focus {
+    outline: none;
+    border-color: #ea580c; /* Laranja condizente com a marcação de erro/atenção */
+    box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.15);
+    background-color: #ffffff;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    margin-top: 15px;
+    border-radius: 8px;
+}
+
+/* =========================================
+   BOTÃO SAIR FLUTUANTE
+   ========================================= */
+
+.btn-flutuante-sair {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px; /* Bordas bem arredondadas */
+    font-size: 0.95rem;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+    cursor: pointer;
+    z-index: 1000; /* Garante que fique por cima de tudo */
+    transition: all 0.3s ease;
+}
+
+.btn-flutuante-sair:hover {
+    background-color: #dc2626; /* Fica um vermelho mais escuro ao passar o mouse */
+    transform: translateY(-3px); /* Efeito de elevação */
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6);
+}

@@ -17,10 +17,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// Carrega categorias e produtos de forma sequencial
+// Carrega os produtos PRIMEIRO, para sabermos o que está em uso
 async function inicializarCatalogo() {
-    await carregarCategorias();
     await carregarProdutos();
+    await carregarCategorias();
 }
 
 async function carregarCategorias() {
@@ -34,14 +34,20 @@ async function carregarCategorias() {
 
         const categoryBar = document.getElementById('categoryBar');
 
-        data.forEach(cat => {
+        // A MÁGICA ACONTECE AQUI: 
+        // Filtra para manter apenas as categorias que existem dentro de 'todosProdutos'
+        const categoriasAtivas = data.filter(cat => 
+            todosProdutos.some(prod => prod.categoria === cat.nome)
+        );
+
+        // Agora criamos os botões apenas para as categorias ativas
+        categoriasAtivas.forEach(cat => {
             const btn = document.createElement('button');
             btn.className = 'btn-filter';
             
-            // Converte "FERRAMENTAS" para "Ferramentas" (padrão visual mais agradável)
+            // Converte "FERRAMENTAS" para "Ferramentas"
             btn.textContent = cat.nome.charAt(0).toUpperCase() + cat.nome.slice(1).toLowerCase();
             
-            // Atribui o evento de clique passando o nome oficial em maiúsculo para o filtro funcionar
             btn.onclick = function() { filtrarCategoria(cat.nome, this); };
             
             categoryBar.appendChild(btn);

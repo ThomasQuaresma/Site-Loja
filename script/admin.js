@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
         if (window.supabase) {
             clienteDB = window.supabase.createClient(supabaseUrl, supabaseKey);
-            inicializarSistema(); 
+            verificarSessao(); 
         }
     } catch (erro) {
         console.error("Erro na inicialização:", erro);
@@ -19,6 +19,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     adicionarLinhaEspecificacaoBlindada('', '', '');
     configurarUploadFoto();
+    
+    const btnEntrar = document.getElementById("btnEntrar");
+    if (btnEntrar) btnEntrar.addEventListener("click", fazerLogin);
+
+    const btnSair = document.getElementById("btnSair");
+    if (btnSair) btnSair.addEventListener("click", fazerLogout);
     
     const btnAddSpec = document.getElementById("btnAddSpec");
     if (btnAddSpec) {
@@ -59,7 +65,48 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// Garante que as categorias carreguem ANTES dos produtos para a edição funcionar perfeitamente
+async function verificarSessao() {
+    const { data: { session } } = await clienteDB.auth.getSession();
+    
+    if (session) {
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("painelAdmin").style.display = "block";
+        inicializarSistema();
+    } else {
+        document.getElementById("loginContainer").style.display = "block";
+        document.getElementById("painelAdmin").style.display = "none";
+    }
+}
+
+async function fazerLogin() {
+    const email = document.getElementById("emailLogin").value;
+    const senha = document.getElementById("senhaLogin").value;
+    const btn = document.getElementById("btnEntrar");
+    
+    if (!email || !senha) return alert("Preencha todos os campos.");
+    
+    btn.innerText = "Autenticando...";
+    btn.disabled = true;
+
+    const { error } = await clienteDB.auth.signInWithPassword({
+        email: email,
+        password: senha,
+    });
+
+    if (error) {
+        alert("Acesso negado. Verifique as credenciais.");
+        btn.innerText = "Acessar Painel";
+        btn.disabled = false;
+    } else {
+        verificarSessao();
+    }
+}
+
+async function fazerLogout() {
+    await clienteDB.auth.signOut();
+    window.location.reload();
+}
+
 async function inicializarSistema() {
     await carregarCategorias();
     await carregarListaAdmin();
@@ -95,7 +142,6 @@ async function criarNovaCategoria() {
     const input = document.getElementById("inputNovaCategoria");
     const btn = document.getElementById("btnCriarCategoria");
     
-    // Converte tudo para maiúsculo para manter o padrão visual do seu banco
     let nomeCategoria = input.value.trim().toUpperCase();
 
     if (!nomeCategoria) {
@@ -113,7 +159,6 @@ async function criarNovaCategoria() {
         input.value = "";
         alert("Categoria adicionada com sucesso!");
         
-        // Atualiza a lista suspensa na mesma hora sem precisar recarregar a página
         await carregarCategorias();
         
     } catch (erro) {
@@ -305,6 +350,19 @@ async function processarSubmissao(event) {
     const btnSubmit = event.target.querySelector('button[type="submit"]');
     btnSubmit.innerText = "A processar...";
     btnSubmit.disabled = true;
+
+    // NOVO BLOCO: Trava de segurança para não perder dados digitados
+    const { data: sessaoAtual } = await clienteDB.auth.getSession();
+    if (!sessaoAtual.session) {
+        alert("Sua sessão expirou por inatividade. Digite a senha novamente (os seus dados não serão perdidos).");
+        document.getElementById("loginContainer").style.display = "block";
+        document.getElementById("painelAdmin").style.display = "none";
+        
+        btnSubmit.innerText = produtoIdEmEdicao ? "Atualizar Produto" : "Gravar Produto";
+        btnSubmit.disabled = false;
+        return; // Interrompe o processo sem apagar o formulário
+    }
+    // FIM DO NOVO BLOCO
 
     const titulo = document.getElementById("titulo").value;
     const categoria = document.getElementById("categoria").value;
