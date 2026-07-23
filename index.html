@@ -1,66 +1,125 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Precisa - Catálogo Técnico Elétrico</title>
-    <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="style/style.css">
-    <link rel="icon" type="image/png" href="img/favicon.png">
+    <title>Precisa Elétrica | Sua Base de Suprimentos</title>
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="icon" type="image/png" href="img/icone-192.png">
 </head>
 <body>
     <header class="navbar">
-        <div class="logo-area">
-            <div class="brand-container">
-                <span class="brand-main">PRECISA</span>
-                <span class="brand-sub">Elétrica • Hidráulica • Eletrônica</span>
-            </div>
+        <div class="brand-container">
+            <span class="brand-main">PRECISA</span>
+            <span class="brand-sub">Base de Suprimentos</span>
         </div>
         
-        <nav class="main-nav">
-            <div class="search-box">
-                <input type="text" id="inputBusca" placeholder="Buscar por código ou nome...">
-            </div>
-            <ul class="main-menu-lista">
-                <li><a href="index.html">Produtos</a></li>
-                <li><a href="about.html">A Empresa</a></li>
-                <li><a href="contact.html">Localização</a></li>
-            </ul>
+        <nav class="main-menu-lista">
+            <a href="index.html" class="ativo">Início</a>
+            <a href="html/catalogo.html">Produtos</a>
+            <a href="html/about.html">A Empresa</a>
+            <a href="html/contact.html">Localização</a>
         </nav>
     </header>
 
-    <div class="category-bar" id="categoryBar">
-        <button class="btn-filter active" onclick="filtrarCategoria('TODOS', this)">Todos</button>
-        <!-- Os botões das categorias serão injetados automaticamente aqui pelo JavaScript -->
-    </div>
 
-    <div id="cartWidget" class="cart-widget" style="display: none;">
-        <span id="cartCount">0</span> itens no orçamento
-        <button onclick="abrirOrcamento()">Finalizar Solicitação</button>
-    </div>
-
-    <main class="main-content">
-        <div class="produtos-tecnicos-grid" id="catalogoProdutos">
-            <h3 class="loading-msg">Carregando especificações técnicas...</h3>
+    <!-- BANNER PRINCIPAL -->
+    <section class="hero-precisa">
+        <div class="hero-overlay"></div>
+        <div class="hero-conteudo">
+            <h1 class="hero-titulo">ESPECIALISTAS EM <br><b>MATERIAIS ELÉTRICOS</b></h1>
+            <p class="hero-subtitulo">As melhores soluções para obras residenciais, comerciais e industriais. As principais marcas do mercado com pronta entrega.</p>
+            <a href="html/catalogo.html" class="hero-botao">VER CATÁLOGO COMPLETO</a>
         </div>
+    </section>
 
-        <div id="imageModal" class="modal">
-            <span class="close-modal">&times;</span>
-            <img class="modal-content" id="expandedImg">
+    <!-- SEÇÃO DE CONTADORES (AUTORIDADE) -->
+    <section class="estatisticas-precisa">
+        <div class="estatisticas-container">
+            <div class="stat-item">
+                <!-- Mudei para 3000 e coloquei o data-alvo="3000" -->
+                <span class="stat-numero" data-alvo="50000">0</span>
+                <span class="stat-texto">Itens em Estoque</span>
+            </div>
+            <div class="stat-item">
+                <!-- Mudei para 15 e coloquei o data-alvo="15" -->
+                <span class="stat-numero" data-alvo="30">0</span>
+                <span class="stat-texto">Marcas Parceiras</span>
+            </div>
+            <div class="stat-item">
+                <!-- Mudei para 100 e coloquei o data-alvo="100" -->
+                <span class="stat-numero" data-alvo="100">0</span>
+                <span class="stat-texto">Garantia Técnica</span>
+            </div>
         </div>
-    </main>
+    </section>
 
-    <footer class="site-footer">
-        <div class="footer-container">
-            <p>&copy; 2026 Precisa Elétrica. Catálogo online para fins de consulta técnica e orçamentos.</p>
+    <!-- SEÇÃO DE SOLUÇÕES / PILARES -->
+    <section class="solucoes-precisa">
+        <div class="solucoes-container">
+            
+            <!-- Lado Esquerdo: Título e Chamada -->
+            <div class="solucoes-info">
+                <span class="subtitulo-secao">CONHEÇA NOSSAS</span>
+                <h2 class="titulo-secao">Soluções Especializadas</h2>
+                <p class="descricao-secao">
+                    Entregamos suporte técnico completo e suprimentos de alta performance para projetos residenciais, comerciais, industriais e de transição energética.
+                </p>
+                <a href="https://wa.me/5519998908218" 
+                class="btn-solucoes" target="_blank" rel="noopener noreferrer">
+                    Contato Direto
+                </a>
+            </div>
+
+            <!-- Lado Direito: Grid de Cartões Atualizado -->
+            <div class="solucoes-grid">
+                
+                <!-- Card 1: Residencial -->
+                <div class="card-solucao">
+                    <div class="card-icone">🏠</div>
+                    <h3>Projetos Residenciais</h3>
+                    <p>Tudo o que sua residência precisa em materiais elétricos e hidráulicos com padrão de qualidade superior, unindo segurança, estética e economia para o seu lar.</p>
+                </div>
+
+                <!-- Card 2: Comercial -->
+                <div class="card-solucao">
+                    <div class="card-icone">🏢</div>
+                    <h3>Infraestrutura Comercial e Industrial</h3>
+                    <p>Soluções modernas para comércios e empresas. Fornecimento ágil e técnico para manutenções, ampliações ou novas instalações com foco em eficiência operacional.</p>
+                </div>
+
+                <!-- Card 3: Automação -->
+                <div class="card-solucao">
+                    <div class="card-icone">💡</div>
+                    <h3>Automação e Segurança</h3>
+                    <p>Tecnologia aplicada ao controle e proteção de ambientes. Trabalhamos com sistemas de segurança eletrônica e automação para otimizar rotinas e proteger o seu patrimônio.</p>
+                </div>
+
+                <!-- Card 4: Energia Solar (Substituiu Média e Alta Tensão) -->
+                <div class="card-solucao">
+                    <div class="card-icone">☀️</div>
+                    <h3>Eficiência Energética</h3>
+                    <p>Sistemas fotovoltaicos completos. Fornecimento de kits de materiais de alta eficiência e equipe técnica especializada para a instalação e homologação do seu sistema.</p>
+                </div>
+
+            </div>
+
         </div>
-    </footer>
+    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="./script/catalogo.js"></script>
-        <!-- =========================================
-        FOOTER PRINCIPAL
-        ========================================= -->
+    <!-- BOTÃO FLUTUANTE WHATSAPP -->
+    <a href="https://wa.me/5519998908218?text=Olá!%20Gostaria%20de%20solicitar%20um%20orçamento." 
+    class="whatsapp-flutuante" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    title="Fale conosco pelo WhatsApp">
+        <!-- Ícone SVG limpo do WhatsApp -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="#ffffff">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+        </svg>
+        <span class="texto-wtp">Fale Conosco</span>
+    </a>
+    <!--FOOTER PRINCIPAL-->
     <footer class="footer-precisa">
         <div class="footer-container">
             <!-- Coluna 1: Sobre a Empresa -->
@@ -74,7 +133,8 @@
             <div class="footer-col">
                 <h3>Acesso Rápido</h3>
                 <ul class="footer-links">
-                    <li><a href="index.html">Catálogo de Produtos</a></li>
+                    <li><a href="../index.html">Início</a></li>
+                    <li><a href="html/catalogo.html">Catálogo de Produtos</a></li>
                     <li><a href="html/about.html">A Empresa</a></li>
                     <li><a href="html/contact.html">Nossa Localização</a></li>
                 </ul>
@@ -86,7 +146,7 @@
                 <ul class="footer-contact">
                     <li>
                         <span>📍</span> 
-                        <span>Rua Augustinho de Colli, 144<br>Centro, Estiva Gerbi - SP</span>
+                        <span>Rua Augustinho de Colli, 149<br>Centro, Estiva Gerbi - SP</span>
                     </li>
                     <li>
                         <span>📞</span> 
@@ -108,5 +168,6 @@
             </p>
         </div>
     </footer>
+    <script src="script/contador.js"></script>
 </body>
 </html>

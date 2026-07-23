@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Localização | Precisa Elétrica</title>
+    <title>Precisa - Catálogo Técnico Elétrico</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../style/style.css">
     <link rel="icon" type="image/png" href="../img/favicon.png">
 </head>
@@ -13,44 +14,38 @@
             <span class="brand-main">PRECISA</span>
             <span class="brand-sub">Base de Suprimentos</span>
         </div>
+
+        <!-- Caixa de busca no centro -->
+        <div class="search-box">
+            <input type="text" id="busca" placeholder="Buscar por código, marca ou nome...">
+        </div>
         
         <nav class="main-menu-lista">
             <a href="../index.html">Início</a>
-            <a href="catalogo.html">Produtos</a>
+            <a href="catalogo.html" class="ativo">Produtos</a>
             <a href="about.html">A Empresa</a>
-            <a href="contact.html" class="ativo">Localização</a>
+            <a href="contact.html">Localização</a>
         </nav>
     </header>
 
-    <div class="container-local">
-        <div class="info-contato">
-            <h1 class="titulo-pagina">Onde Estamos</h1>
-            <p class="subtitulo-local">Venha nos visitar. Nossa estrutura é preparada para carga e descarga ágil, otimizando o tempo da sua equipe.</p>
-            
-            <div class="bloco-info">
-                <h3>Endereço</h3>
-                <p><strong>Rua Augustinho de Colli, 144</strong><br>Centro<br>Estiva Gerbi - SP</p>
-            </div>
-
-            <div class="bloco-info">
-                <h3>Horário de Funcionamento</h3>
-                <p><strong>Segunda a Sexta:</strong> 08:00 às 18:00<br>
-                <strong>Sábado:</strong> 08:00 às 12:00<br>
-                <strong>Domingo:</strong> Fechado</p>
-            </div>
-
-            <div class="bloco-info">
-                <h3>Contato Rápido</h3>
-                <p>WhatsApp: (19) 98245-4954<br>E-mail: contato@precisaeletrica.com.br</p>
-            </div>
-        </div>
-
-        <div class="mapa-container">
-            <!-- Mapa configurado para Rua Augustinho de Colli, 144, Centro, Estiva Gerbi -->
-            <iframe src="https://maps.google.com/maps?q=Rua%20Augustinho%20de%20Colli,%20144,%20Centro,%20Estiva%20Gerbi&t=&z=16&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy"></iframe>
-        </div>
+    <div class="category-bar" id="categoryBar">
+        <button class="btn-filter active" onclick="filtrarCategoria('TODOS', this)">Todos</button>
+        <!-- Os botões das categorias serão injetados automaticamente aqui pelo JavaScript -->
     </div>
-    <!-- =========================================
+
+    <div id="cartWidget" class="cart-widget" style="display: none;">
+        <span id="cartCount">0</span> itens no orçamento
+        <button onclick="abrirOrcamento()">Finalizar Solicitação</button>
+    </div>
+
+    <main class="main-content">
+        <div class="produtos-tecnicos-grid" id="catalogoProdutos">
+            <h3 class="loading-msg">Carregando especificações técnicas...</h3>
+        </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../script/catalogo.js"></script>
+        <!-- =========================================
         FOOTER PRINCIPAL
         ========================================= -->
     <footer class="footer-precisa">

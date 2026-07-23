@@ -17,31 +17,44 @@ body {
     font-family: var(--fonte-leitura);
     background-color: var(--cinza-fundo);
     color: var(--preto-tecnico);
-    padding-top: 140px; /* Aumentado para acomodar a barra de filtros */
+    padding-top: 140px; /* Acomoda o menu e a barra de filtros */
     line-height: 1.4;
 }
 
-/* --- Navbar Profissional --- */
+/* =========================================
+   CABEÇALHO UNIFICADO (NAVBAR)
+   ========================================= */
+
 .navbar {
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
+    height: 80px; /* Altura fixa elegante, impede que fique gigante */
     background: var(--azul-precisa);
-    padding: 15px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 40px;
     z-index: 1000;
     border-bottom: 4px solid var(--laranja-precisa);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-.brand-container { display: flex; flex-direction: column; }
+/* --- Container da Logo (Esquerda) --- */
+.brand-container { 
+    display: flex; 
+    flex-direction: column; 
+    min-width: 200px;
+}
+
 .brand-main {
     font-family: var(--fonte-industrial);
     color: var(--laranja-precisa);
     font-size: 1.8rem;
     letter-spacing: 2px;
 }
+
 .brand-sub {
     color: var(--branco);
     font-size: 0.7rem;
@@ -49,30 +62,90 @@ body {
     letter-spacing: 1px;
 }
 
-.search-box input {
-    padding: 10px 20px;
-    border-radius: 4px;
-    border: none;
-    width: 300px;
-    font-family: var(--fonte-leitura);
-    outline: none;
+/* --- Caixa de Busca (Centro - Aparece só no Catálogo) --- */
+.search-box {
+    flex: 1; /* Faz a busca ocupar o espaço vazio do meio */
+    display: flex;
+    justify-content: center;
+    padding: 0 40px; 
 }
 
-.main-menu-lista { display: flex; list-style: none; gap: 20px; }
+.search-box input {
+    width: 100%;
+    max-width: 500px; /* Limita a largura para não esmagar os links */
+    padding: 12px 20px;
+    border-radius: 30px; /* Bordas arredondadas, visual moderno */
+    border: none;
+    outline: none;
+    font-family: var(--fonte-leitura);
+    font-size: 1rem;
+    color: var(--preto-tecnico);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* --- Links do Menu (Direita) --- */
+.main-menu-lista { 
+    display: flex; 
+    list-style: none; 
+    gap: 30px; 
+    align-items: center;
+}
+
 .main-menu-lista a {
     color: var(--branco);
     text-decoration: none;
-    font-weight: bold;
-    font-size: 0.9rem;
+    font-weight: 700;
+    font-size: 0.95rem;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    padding-bottom: 5px;
     transition: color 0.3s;
 }
-.main-menu-lista a:hover { color: var(--laranja-precisa); }
 
-/* --- Barra de Filtros --- */
+/* Efeito Hover e Página Ativa */
+.main-menu-lista a:hover,
+.main-menu-lista a.ativo { 
+    color: var(--laranja-precisa); 
+}
+
+/* Linha Laranja Animada */
+.main-menu-lista a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--laranja-precisa);
+    transition: width 0.3s ease;
+}
+
+.main-menu-lista a:hover::after,
+.main-menu-lista a.ativo::after {
+    width: 100%;
+}
+
+/* Responsividade do Menu */
+@media (max-width: 900px) {
+    .navbar {
+        height: auto; 
+        flex-direction: column;
+        padding: 15px 20px;
+        gap: 15px;
+    }
+    .search-box { width: 100%; padding: 0; }
+    .search-box input { max-width: 100%; }
+    .main-menu-lista { flex-wrap: wrap; justify-content: center; gap: 15px; }
+}
+
+
+/* =========================================
+   BARRA DE FILTROS (CATÁLOGO)
+   ========================================= */
 .category-bar {
     position: fixed;
-    top: 85px; /* Logo abaixo da navbar */
+    top: 80px; /* Gruda exatamente embaixo da navbar de 80px */
     width: 100%;
     background: var(--branco);
     padding: 10px 40px;
@@ -107,7 +180,9 @@ body {
     border-color: var(--laranja-precisa);
 }
 
-/* --- Grid de Produtos --- */
+/* =========================================
+   GRID DE PRODUTOS E CARDS
+   ========================================= */
 .produtos-tecnicos-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -126,6 +201,7 @@ body {
     flex-direction: column;
     transition: transform 0.2s, box-shadow 0.2s;
 }
+
 .card-tecnico:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
@@ -137,6 +213,7 @@ body {
     padding: 12px 20px;
     text-align: center;
 }
+
 .card-header h2 {
     font-family: var(--fonte-industrial);
     font-size: 0.9rem;
@@ -160,6 +237,7 @@ body {
     align-items: center;
     border-bottom: 1px solid var(--cinza-borda);
 }
+
 .product-visual-central img {
     max-width: 100%;
     max-height: 200px;
@@ -170,30 +248,49 @@ body {
     width: 100%;
     padding: 15px;
     flex-grow: 1;
+    max-height: 220px; 
+    overflow-y: auto;  
+    padding-top: 0 !important;
 }
 
-/* --- Tabelas Técnicas e Botões --- */
+/* Estiliza a barra de rolagem */
+.product-data-full::-webkit-scrollbar { width: 6px; }
+.product-data-full::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+.product-data-full::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+.product-data-full::-webkit-scrollbar-thumb:hover { background: var(--laranja-precisa); }
+
+/* =========================================
+   TABELAS TÉCNICAS E BOTÕES
+   ========================================= */
 .tabela-tecnica {
     width: 100%;
-    border-collapse: collapse;
     font-size: 0.8rem;
+    border-collapse: separate; 
+    border-spacing: 0;
+    margin-top: 0 !important;
 }
-.tabela-tecnica th {
-    background: #f0f0f0;
+
+.tabela-tecnica thead th {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff !important; 
+    z-index: 10; 
+    border-bottom: 2px solid var(--laranja-precisa); 
+    background-clip: padding-box;
     color: var(--azul-precisa);
     text-align: left;
     padding: 8px;
-    border-bottom: 2px solid var(--laranja-precisa);
     font-family: var(--fonte-industrial);
     font-size: 0.65rem;
 }
+
 .tabela-tecnica td {
     padding: 8px;
     border-bottom: 1px solid #eee;
     vertical-align: middle;
 }
-.tabela-tecnica tr:nth-child(even) { background: #fafafa; }
 
+.tabela-tecnica tr:nth-child(even) { background: #fafafa; }
 .col-acao { text-align: center; width: 40px; }
 
 .btn-add {
@@ -210,7 +307,9 @@ body {
 }
 .btn-add:hover { opacity: 0.8; }
 
-/* --- Widget Flutuante de Orçamento --- */
+/* =========================================
+   WIDGET FLUTUANTE E FOOTER
+   ========================================= */
 .cart-widget {
     position: fixed;
     bottom: 20px;
@@ -237,7 +336,6 @@ body {
     font-weight: bold;
 }
 
-/* --- Footer --- */
 .site-footer {
     background: var(--azul-precisa);
     color: var(--branco);
@@ -246,59 +344,17 @@ body {
     text-align: center;
 }
 
-/* Responsividade */
+/* Responsividade Geral */
 @media (max-width: 768px) {
     body { padding-top: 180px; }
-    .navbar { flex-direction: column; padding: 10px; gap: 10px; }
-    .search-box input { width: 100%; }
     .category-bar { top: 130px; padding: 10px; }
     .produtos-tecnicos-grid { grid-template-columns: 1fr; }
     .cart-widget { bottom: 10px; right: 10px; left: 10px; justify-content: space-between; border-radius: 8px; }
 }
 
-/* Cria a barra de rolagem na área da tabela e trava o topo */
-.product-data-full {
-    max-height: 220px; 
-    overflow-y: auto;  
-    padding-top: 0 !important; /* Remove o buraco transparente acima do cabeçalho */
-}
-
-/* Previne bugs visuais do sticky e tira margens do topo */
-.tabela-tecnica {
-    border-collapse: separate; 
-    border-spacing: 0;
-    margin-top: 0 !important;
-}
-
-.tabela-tecnica thead th {
-    position: sticky;
-    top: 0;
-    background-color: #ffffff !important; 
-    z-index: 10; 
-    border-bottom: 2px solid var(--laranja-precisa, #ff6b00); 
-    background-clip: padding-box; /* Cobre o fundo de forma sólida */
-}
-
-/* Estiliza a barra de rolagem para ficar mais fina e moderna (opcional) */
-.product-data-full::-webkit-scrollbar {
-    width: 6px;
-}
-.product-data-full::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-}
-.product-data-full::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 4px;
-}
-.product-data-full::-webkit-scrollbar-thumb:hover {
-    background: var(--laranja-precisa, #ff6b00);
-}
-
 /* =========================================
-   PÁGINAS INSTITUCIONAIS (EMPRESA E LOCALIZAÇÃO)
+   PÁGINAS INSTITUCIONAIS E LOCALIZAÇÃO
    ========================================= */
-
 .container-institucional {
     max-width: 900px;
     margin: 40px auto;
@@ -318,16 +374,8 @@ body {
     margin-top: 0;
 }
 
-.bloco-texto {
-    margin-bottom: 30px;
-    font-size: 1.1rem;
-}
-
-.destaque-pilares {
-    display: flex;
-    gap: 20px;
-    margin-top: 40px;
-}
+.bloco-texto { margin-bottom: 30px; font-size: 1.1rem; }
+.destaque-pilares { display: flex; gap: 20px; margin-top: 40px; }
 
 .pilar {
     flex: 1;
@@ -339,12 +387,7 @@ body {
     box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
 
-.pilar h3 {
-    color: #ea580c;
-    margin-top: 0;
-}
-
-/* --- ESTILOS DA LOCALIZAÇÃO --- */
+.pilar h3 { color: #ea580c; margin-top: 0; }
 
 .container-local {
     max-width: 900px;
@@ -355,16 +398,8 @@ body {
     gap: 40px;
 }
 
-.info-contato {
-    flex: 1;
-    color: #334155;
-}
-
-.subtitulo-local {
-    font-size: 1.1rem; 
-    margin-bottom: 30px;
-    line-height: 1.6;
-}
+.info-contato { flex: 1; color: #334155; }
+.subtitulo-local { font-size: 1.1rem; margin-bottom: 30px; line-height: 1.6; }
 
 .bloco-info {
     margin-bottom: 25px;
@@ -375,11 +410,7 @@ body {
     box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
 
-.bloco-info h3 {
-    color: #ea580c;
-    margin-top: 0;
-    margin-bottom: 10px;
-}
+.bloco-info h3 { color: #ea580c; margin-top: 0; margin-bottom: 10px; }
 
 .mapa-container {
     flex: 1;
@@ -389,36 +420,23 @@ body {
     border: 1px solid #e2e8f0;
 }
 
-.mapa-container iframe {
-    width: 100%;
-    height: 100%;
-    min-height: 400px;
-    border: none;
-    display: block;
-}
+.mapa-container iframe { width: 100%; height: 100%; min-height: 400px; border: none; display: block; }
 
-/* Responsividade para a página de localização */
 @media (max-width: 768px) {
-    .container-local {
-        flex-direction: column;
-    }
-    
-    .destaque-pilares {
-        flex-direction: column;
-    }
+    .container-local { flex-direction: column; }
+    .destaque-pilares { flex-direction: column; }
 }
 
 /* =========================================
-   FOOTER (RODAPÉ)
+   FOOTER (RODAPÉ) - TODAS AS PÁGINAS
    ========================================= */
-
 .footer-precisa {
-    background-color: #1e293b; /* Azul institucional escuro */
+    background-color: #1e293b; 
     color: #f8fafc;
     padding: 60px 0 0 0;
     font-family: sans-serif;
     margin-top: 80px;
-    border-top: 4px solid #ea580c; /* Detalhe laranja conectando com a marca */
+    border-top: 4px solid #ea580c; 
 }
 
 .footer-container {
@@ -439,13 +457,7 @@ body {
     font-weight: 800;
 }
 
-.footer-desc {
-    color: #94a3b8;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    font-size: 1rem;
-    padding-right: 20px;
-}
+.footer-desc { color: #94a3b8; line-height: 1.6; margin-bottom: 20px; font-size: 1rem; padding-right: 20px; }
 
 .badge-cft {
     display: inline-block;
@@ -468,25 +480,11 @@ body {
 }
 
 .footer-col h3::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 40px;
-    height: 2px;
-    background-color: #ea580c;
+    content: ''; position: absolute; left: 0; bottom: 0; width: 40px; height: 2px; background-color: #ea580c;
 }
 
-.footer-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.footer-links li {
-    margin-bottom: 12px;
-}
-
+.footer-links { list-style: none; padding: 0; margin: 0; }
+.footer-links li { margin-bottom: 12px; }
 .footer-links a {
     color: #94a3b8;
     text-decoration: none;
@@ -494,31 +492,13 @@ body {
     font-size: 1rem;
     display: inline-block;
 }
+.footer-links a:hover { color: #ea580c; transform: translateX(5px); }
 
-.footer-links a:hover {
-    color: #ea580c;
-    transform: translateX(5px); /* Efeito de deslizar para o lado ao passar o mouse */
-}
+.footer-contact { list-style: none; padding: 0; margin: 0; color: #94a3b8; font-size: 1rem; line-height: 1.6; }
+.footer-contact li { margin-bottom: 15px; display: flex; align-items: flex-start; gap: 12px; }
 
-.footer-contact {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    color: #94a3b8;
-    font-size: 1rem;
-    line-height: 1.6;
-}
-
-.footer-contact li {
-    margin-bottom: 15px;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-}
-
-/* Barra inferior de créditos */
 .footer-bottom {
-    background-color: #0f172a; /* Azul ainda mais escuro para dar profundidade */
+    background-color: #0f172a; 
     padding: 25px 20px;
     text-align: center;
     border-top: 1px solid #1e293b;
@@ -530,29 +510,425 @@ body {
     gap: 5px;
 }
 
-.footer-bottom p {
+.footer-bottom p { margin: 0; }
+.developer-credit a { color: #ea580c; text-decoration: none; font-weight: bold; transition: color 0.3s; }
+.developer-credit a:hover { color: #ffffff; }
+
+@media (max-width: 768px) {
+    .footer-container { grid-template-columns: 1fr; gap: 40px; }
+    .footer-desc { padding-right: 0; }
+}
+
+/* =========================================
+   ESTATÍSTICAS / CONTADORES (HOME)
+   ========================================= */
+.estatisticas-precisa {
+    background-color: #f8fafc;
+    padding: 60px 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.estatisticas-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    text-align: center;
+}
+
+.stat-item { flex: 1; display: flex; flex-direction: column; padding: 20px; }
+
+.stat-numero {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #1e293b; 
+    margin-bottom: 5px;
+    line-height: 1;
+}
+
+.stat-texto {
+    font-size: 1.1rem;
+    color: #ea580c; 
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+    .estatisticas-container { flex-direction: column; gap: 40px; }
+    .stat-numero { font-size: 3rem; }
+}
+
+/* =========================================
+   BANNER PRINCIPAL (HERO)
+   ========================================= */
+.hero-precisa {
+    position: relative;
+    width: 100%;
+    min-height: 450px; 
+    background-image: url('../img/fachada3.jpg'); 
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 20px;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Novo Gradiente: Segura o escuro até o final do texto */
+    background: linear-gradient(90deg, 
+        rgba(30, 41, 59, 0.95) 0%,    
+        rgba(30, 41, 59, 0.85) 45%,   /* Mantém escuro protegendo o texto */
+        rgba(30, 41, 59, 0.1) 65%,    /* Clareia só depois que o texto acaba */
+        rgba(30, 41, 59, 0.7) 85%,    /* Começa a escurecer a ponta direita */
+        rgba(30, 41, 59, 1) 95%,      /* Tapa a loja vizinha */
+        rgba(30, 41, 59, 1) 100%
+    );
+    z-index: 1;
+}
+
+.hero-conteudo {
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
+    color: #ffffff;
+    margin-left: 5%;
+}
+
+/* Cria o movimento de surgir de baixo para cima suavemente */
+@keyframes surgirSuave {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-titulo {
+    font-size: 3rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 15px;
+    margin-top: 0;
+    color: #f8fafc;
+    /* Sombra escura para destacar a letra branca do fundo */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    animation: surgirSuave 0.8s ease-out forwards;
+}
+
+.hero-titulo b { 
+    font-weight: 800; 
+    color: #ea580c; 
+    /* Sombra mais leve no laranja para não sujar a cor */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-subtitulo { 
+    font-size: 1.2rem; 
+    font-weight: 400; 
+    margin-bottom: 35px; 
+    line-height: 1.6; 
+    color: #cbd5e1;
+    /* Sombra de contorno suave no subtítulo */
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    animation: surgirSuave 0.8s ease-out 0.3s forwards;
+}
+
+.hero-botao {
+    display: inline-block;
+    background-color: #ea580c;
+    color: #ffffff;
+    padding: 16px 32px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(234, 88, 12, 0.3);
+    /* Inicia invisível e anima com atraso de 0.6s */
+    opacity: 0;
+    animation: surgirSuave 0.8s ease-out 0.6s forwards;
+}
+
+.hero-botao:hover {
+    background-color: #c2410c;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(234, 88, 12, 0.4);
+}
+
+@media (max-width: 768px) {
+    .hero-precisa { justify-content: center; text-align: center; padding: 50px 20px; }
+    .hero-overlay { background: rgba(30, 41, 59, 0.85); }
+    .hero-conteudo { margin-left: 0; }
+    .hero-titulo { font-size: 2.2rem; }
+    .hero-subtitulo { font-size: 1rem; }
+}
+
+/* =========================================
+   BOTÃO FLUTUANTE WHATSAPP
+   ========================================= */
+.whatsapp-flutuante {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background-color: #25d366; /* Verde oficial do WhatsApp */
+    color: #ffffff;
+    padding: 12px 18px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-family: var(--fonte-leitura, sans-serif);
+    font-weight: bold;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+    z-index: 99999;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-flutuante svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+
+.whatsapp-flutuante:hover {
+    background-color: #20ba5a;
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+}
+
+/* Opcional para mobile: se preferir mostrar apenas o ícone redondo no celular */
+@media (max-width: 768px) {
+    .whatsapp-flutuante {
+        padding: 12px;
+        border-radius: 50%;
+    }
+    .whatsapp-flutuante .texto-wtp {
+        display: none; /* Esconde o texto "Fale Conosco" no celular, deixando só o ícone */
+    }
+}
+/* =========================================
+   SEÇÃO DE SOLUÇÕES - IDENTIDADE PRÓPRIA (PRECISA)
+   ========================================= */
+.solucoes-precisa {
+    background-color: #f8fafc;
+    padding: 80px 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.solucoes-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.subtitulo-secao {
+    color: #ea580c;
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.titulo-secao {
+    font-size: 3rem;
+    color: #1e293b;
+    font-weight: 800;
+    margin-top: 0;
+    margin-bottom: 20px;
+    line-height: 1.1;
+}
+
+.descricao-secao {
+    color: #475569;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.btn-solucoes {
+    display: inline-block;
+    background-color: #ea580c;
+    color: #ffffff;
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(234, 88, 12, 0.3);
+}
+
+.btn-solucoes:hover {
+    background-color: #c2410c;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(234, 88, 12, 0.4);
+}
+
+/* Lado Direito: Novo Grid Exclusivo da Precisa */
+.solucoes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.card-solucao {
+    background: #ffffff;
+    padding: 30px;
+    /* Cantos totalmente limpos e uniformes, com uma borda superior laranja marcante da marca */
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    border-top: 4px solid #ea580c; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.card-solucao:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(30, 41, 59, 0.08);
+    border-color: #cbd5e1;
+    border-top-color: #1e293b; /* Inverte elegante para o azul escuro no hover */
+}
+
+.card-icone {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    background: #fff7ed;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.card-solucao h3 {
+    color: #1e293b;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.card-solucao p {
+    color: #64748b;
+    font-size: 0.9rem;
+    line-height: 1.6;
     margin: 0;
 }
 
-.developer-credit a {
-    color: #ea580c;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-.developer-credit a:hover {
-    color: #ffffff;
-}
-
-/* Responsividade para celulares */
-@media (max-width: 768px) {
-    .footer-container {
+@media (max-width: 900px) {
+    .solucoes-container {
         grid-template-columns: 1fr;
         gap: 40px;
     }
-    
-    .footer-desc {
-        padding-right: 0;
+    .solucoes-grid {
+        grid-template-columns: 1fr;
+    }
+    .titulo-secao {
+        font-size: 2.3rem;
+    }
+}
+
+/* =========================================
+   GALERIA DE FOTOS DA PÁGINA "A EMPRESA"
+   ========================================= */
+.galeria-empresa {
+    margin: 40px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.foto-fachada-destaque {
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+}
+
+.foto-fachada-destaque img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.foto-fachada-destaque:hover img {
+    transform: scale(1.02);
+}
+
+.fotos-interior-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.item-foto-interior {
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+    transition: transform 0.3s ease;
+}
+
+.item-foto-interior:hover {
+    transform: translateY(-4px);
+}
+
+.item-foto-interior img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Legendas sofisticadas abaixo das fotos */
+.legenda-foto {
+    display: block;
+    background-color: #1e293b;
+    color: #f8fafc;
+    padding: 12px 15px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.5px;
+    font-family: var(--fonte-leitura, sans-serif);
+}
+
+/* Responsividade para Celulares */
+@media (max-width: 768px) {
+    .fotos-interior-grid {
+        grid-template-columns: 1fr; /* No celular as fotos do interior empilham */
+    }
+    .foto-fachada-destaque img {
+        max-height: 250px;
+    }
+    .item-foto-interior img {
+        height: 200px;
     }
 }

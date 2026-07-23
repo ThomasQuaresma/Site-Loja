@@ -33,6 +33,7 @@ async function carregarCategorias() {
         if (error) throw error;
 
         const categoryBar = document.getElementById('categoryBar');
+        if (!categoryBar) return; // Trava de segurança
 
         // A MÁGICA ACONTECE AQUI: 
         // Filtra para manter apenas as categorias que existem dentro de 'todosProdutos'
@@ -71,12 +72,16 @@ async function carregarProdutos() {
         configurarBusca();
     } catch (erro) {
         console.error("Erro ao carregar o catálogo:", erro);
-        document.getElementById('catalogoProdutos').innerHTML = '<h3>Erro ao carregar os produtos técnicos.</h3>';
+        const container = document.getElementById('catalogoProdutos');
+        if (container) {
+            container.innerHTML = '<h3>Erro ao carregar os produtos técnicos.</h3>';
+        }
     }
 }
 
 function renderizarProdutos(produtos) {
     const container = document.getElementById('catalogoProdutos');
+    if (!container) return; // Trava de segurança
     
     if(produtos.length === 0) {
         container.innerHTML = '<h3>Nenhum produto encontrado nesta categoria.</h3>';
@@ -148,7 +153,12 @@ function filtrarCategoria(categoria, elementoBotao) {
 }
 
 function configurarBusca() {
-    const input = document.getElementById('inputBusca');
+    // CORREÇÃO AQUI: Trocado de 'inputBusca' para 'busca' para bater com o HTML
+    const input = document.getElementById('busca'); 
+    
+    // Trava de segurança: se o input não existir na tela, a função para aqui e não quebra o site
+    if (!input) return; 
+
     input.addEventListener('keyup', () => {
         const termo = input.value.toLowerCase();
         const cards = document.querySelectorAll('.card-tecnico');
