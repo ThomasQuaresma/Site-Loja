@@ -1,22 +1,106 @@
-const supabaseUrl = 'https://qsdosnxvlzkhgdpbwlbo.supabase.co';
+const supabaseUrl = 'https://qsdosnxvlzkhgdpbwlbo.supabase.co'; 
 const supabaseKey = 'sb_publishable_fnQn-RRq6tRXDwTcgZ0--w_zzA32rai';
 
-let clienteDB = null;
+let clienteDB = null; 
 let produtosCarregados = [];
-
-let produtoIdEmEdicao = null;
+let produtoIdEmEdicao = null; 
 let imagemUrlAntiga = null;
 
-document.addEventListener("DOMContentLoaded", () => {
-    try {
-        if (window.supabase) {
-            clienteDB = window.supabase.createClient(supabaseUrl, supabaseKey);
+document.addEventListener("DOMContentLoaded", () => { 
+    try { 
+        if (window.supabase) { 
+            clienteDB = window.supabase.createClient(supabaseUrl, supabaseKey); 
+            
+            // 1. Inicia o ouvinte de segurança em tempo real (compatível com os IDs do HTML)
+            configurarOuvinteDeSessao();
+            
+            // 2. Verifica a sessão atual
             verificarSessao(); 
+            
+            // 3. Configura os eventos visuais e botões
+            configurarEventosGerais();
+        } else {
+            console.error("Erro: SDK do Supabase não encontrado no HTML.");
         }
-    } catch (erro) {
-        console.error("Erro na inicialização:", erro);
+    } catch (erro) { 
+        console.error("Erro na inicialização:", erro); 
+    }
+});
+
+// =========================================
+// MÓDULO DE SEGURANÇA E AUTENTICAÇÃO
+// =========================================
+
+function configurarOuvinteDeSessao() {
+    clienteDB.auth.onAuthStateChange((evento, sessao) => {
+        const painelAdmin = document.getElementById('painelAdmin');
+        const loginContainer = document.getElementById('loginContainer');
+        
+        if (evento === 'SIGNED_OUT' || !sessao) {
+            if(painelAdmin) painelAdmin.style.display = 'none';
+            if(loginContainer) loginContainer.style.display = 'block';
+        }
+    });
+}
+
+async function verificarSessao() { 
+    const { data: { session }, error } = await clienteDB.auth.getSession();
+    
+    const painelAdmin = document.getElementById('painelAdmin');
+    const loginContainer = document.getElementById('loginContainer');
+
+    if (error || !session) {
+        if(painelAdmin) painelAdmin.style.display = 'none';
+        if(loginContainer) loginContainer.style.display = 'block';
+        return false;
     }
 
+    if(loginContainer) loginContainer.style.display = 'none';
+    if(painelAdmin) painelAdmin.style.display = 'block';
+    
+    await inicializarSistema();
+    return true;
+}
+
+async function fazerLogin() { 
+    const emailInput = document.getElementById("emailLogin");
+    const senhaInput = document.getElementById("senhaLogin");
+    const btn = document.getElementById("btnEntrar");
+    
+    if(!emailInput || !senhaInput) return alert("Erro: Campos de login não encontrados.");
+    
+    const email = emailInput.value; 
+    const senha = senhaInput.value; 
+
+    if (!email || !senha) return alert("Preencha todos os campos.");
+
+    btn.innerText = "Autenticando...";
+    btn.disabled = true;
+
+    const { error } = await clienteDB.auth.signInWithPassword({
+        email: email,
+        password: senha
+    });
+
+    if(error) {
+        alert("Acesso negado. Verifique as credenciais.");
+        btn.innerText = "Acessar Painel";
+        btn.disabled = false;
+    } else {
+        verificarSessao();
+    }
+}
+
+async function fazerLogout() { 
+    await clienteDB.auth.signOut(); 
+    window.location.reload(); 
+}
+
+// =========================================
+// CONFIGURAÇÃO DOS EVENTOS DA TELA
+// =========================================
+
+function configurarEventosGerais() {
     adicionarLinhaEspecificacaoBlindada('', '', '');
     configurarUploadFoto();
     
@@ -63,69 +147,27 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnCriarCategoria) {
         btnCriarCategoria.addEventListener("click", criarNovaCategoria);
     }
-});
-
-async function verificarSessao() {
-    const { data: { session } } = await clienteDB.auth.getSession();
-    
-    if (session) {
-        document.getElementById("loginContainer").style.display = "none";
-        document.getElementById("painelAdmin").style.display = "block";
-        inicializarSistema();
-    } else {
-        document.getElementById("loginContainer").style.display = "block";
-        document.getElementById("painelAdmin").style.display = "none";
-    }
 }
 
-async function fazerLogin() {
-    const email = document.getElementById("emailLogin").value;
-    const senha = document.getElementById("senhaLogin").value;
-    const btn = document.getElementById("btnEntrar");
-    
-    if (!email || !senha) return alert("Preencha todos os campos.");
-    
-    btn.innerText = "Autenticando...";
-    btn.disabled = true;
+// =========================================
+// MÓDULO DE GESTÃO E PRODUTOS
+// =========================================
 
-    const { error } = await clienteDB.auth.signInWithPassword({
-        email: email,
-        password: senha,
-    });
-
-    if (error) {
-        alert("Acesso negado. Verifique as credenciais.");
-        btn.innerText = "Acessar Painel";
-        btn.disabled = false;
-    } else {
-        verificarSessao();
-    }
+async function inicializarSistema() { 
+    await carregarCategorias(); 
+    await carregarListaAdmin(); 
 }
 
-async function fazerLogout() {
-    await clienteDB.auth.signOut();
-    window.location.reload();
-}
-
-async function inicializarSistema() {
-    await carregarCategorias();
-    await carregarListaAdmin();
-}
-
-async function carregarCategorias() {
-    if (!clienteDB) return;
+async function carregarCategorias() { 
+    if (!clienteDB) return; 
     const select = document.getElementById("categoria");
-    
+    if (!select) return;
+
     try {
-        const { data, error } = await clienteDB
-            .from('categorias')
-            .select('*')
-            .order('nome', { ascending: true });
-
+        const { data, error } = await clienteDB.from('categorias').select('*').order('nome', { ascending: true });
         if (error) throw error;
-
-        select.innerHTML = '<option value="" disabled selected>Selecione uma categoria...</option>';
         
+        select.innerHTML = '<option value="" disabled selected>Selecione uma categoria...</option>';
         data.forEach(cat => {
             const option = document.createElement("option");
             option.value = cat.nome;
@@ -139,9 +181,17 @@ async function carregarCategorias() {
 }
 
 async function criarNovaCategoria() {
+    // 1. Busca os elementos na tela
     const input = document.getElementById("inputNovaCategoria");
     const btn = document.getElementById("btnCriarCategoria");
     
+    // 2. Trava de segurança (evita Null Reference)
+    if (!input || !btn) {
+        console.error("Erro: Campos de nova categoria não encontrados no HTML.");
+        return; 
+    }
+
+    // 3. Agora sim, extrai o valor com segurança
     let nomeCategoria = input.value.trim().toUpperCase();
 
     if (!nomeCategoria) {
@@ -158,9 +208,7 @@ async function criarNovaCategoria() {
 
         input.value = "";
         alert("Categoria adicionada com sucesso!");
-        
         await carregarCategorias();
-        
     } catch (erro) {
         console.error("Erro ao gravar categoria:", erro);
         alert("Erro ao criar categoria: " + erro.message);
@@ -173,6 +221,7 @@ async function criarNovaCategoria() {
 async function carregarListaAdmin() {
     if (!clienteDB) return;
     const container = document.getElementById("listaProdutosAdmin");
+    if (!container) return;
 
     try {
         const { data: produtos, error } = await clienteDB
@@ -321,7 +370,9 @@ function configurarUploadFoto() {
     const previewImg = document.getElementById("previewImg");
     const labelUpload = document.querySelector(".image-upload-label");
     const btnRemoveImage = document.getElementById("btnRemoveImage");
+    
     if (!inputImagem) return;
+    
     inputImagem.addEventListener("change", function() {
         const ficheiro = this.files[0];
         if (ficheiro) {
@@ -334,47 +385,67 @@ function configurarUploadFoto() {
             leitor.readAsDataURL(ficheiro);
         }
     });
-    btnRemoveImage.addEventListener("click", function() {
-        inputImagem.value = "";
-        previewImg.src = "";
-        imagePreview.style.display = "none";
-        labelUpload.style.display = "flex";
-        if (produtoIdEmEdicao) imagemUrlAntiga = null; 
-    });
+    
+    if (btnRemoveImage) {
+        btnRemoveImage.addEventListener("click", function() {
+            inputImagem.value = "";
+            previewImg.src = "";
+            imagePreview.style.display = "none";
+            labelUpload.style.display = "flex";
+            if (produtoIdEmEdicao) imagemUrlAntiga = null; 
+        });
+    }
 }
 
 async function processarSubmissao(event) {
     event.preventDefault();
     if (!clienteDB) return alert("Erro de ligação ao banco.");
     
+    // 1. Busca os elementos principais
     const btnSubmit = event.target.querySelector('button[type="submit"]');
+    const inputTitulo = document.getElementById("titulo");
+    const inputCategoria = document.getElementById("categoria");
+    const inputImagem = document.getElementById("imagem");
+
+    // 2. Trava de segurança (evita Null Reference)
+    if (!btnSubmit || !inputTitulo || !inputCategoria || !inputImagem) {
+        alert("Erro fatal: Campos do formulário não encontrados na tela.");
+        return;
+    }
+
     btnSubmit.innerText = "A processar...";
     btnSubmit.disabled = true;
 
-    // NOVO BLOCO: Trava de segurança para não perder dados digitados
+    // Trava de segurança contra sessão expirada
     const { data: sessaoAtual } = await clienteDB.auth.getSession();
     if (!sessaoAtual.session) {
-        alert("Sua sessão expirou por inatividade. Digite a senha novamente (os seus dados não serão perdidos).");
+        alert("Sua sessão expirou por inatividade. Faça login novamente (os seus dados não serão perdidos).");
         document.getElementById("loginContainer").style.display = "block";
         document.getElementById("painelAdmin").style.display = "none";
         
         btnSubmit.innerText = produtoIdEmEdicao ? "Atualizar Produto" : "Gravar Produto";
         btnSubmit.disabled = false;
-        return; // Interrompe o processo sem apagar o formulário
+        return; 
     }
-    // FIM DO NOVO BLOCO
 
-    const titulo = document.getElementById("titulo").value;
-    const categoria = document.getElementById("categoria").value;
-    const inputImagem = document.getElementById("imagem");
+    // 3. Agora sim, extrai os valores com segurança
+    const titulo = inputTitulo.value;
+    const categoria = inputCategoria.value;
     
     const especificacoes = [];
     document.querySelectorAll(".spec-row").forEach(linha => {
-        especificacoes.push({
-            codigo: linha.querySelector(".input-codigo").value,
-            descricao: linha.querySelector(".input-descricao").value,
-            embalagem: linha.querySelector(".input-embalagem").value
-        });
+        const inputCodigo = linha.querySelector(".input-codigo");
+        const inputDescricao = linha.querySelector(".input-descricao");
+        const inputEmbalagem = linha.querySelector(".input-embalagem");
+        
+        // Validação de segurança para as linhas dinâmicas também
+        if (inputCodigo && inputDescricao && inputEmbalagem) {
+            especificacoes.push({
+                codigo: inputCodigo.value,
+                descricao: inputDescricao.value,
+                embalagem: inputEmbalagem.value
+            });
+        }
     });
 
     if (especificacoes.length === 0) {

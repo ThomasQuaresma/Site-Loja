@@ -25,7 +25,9 @@ body {
     padding-bottom: 40px;
 }
 
-/* Cabeçalho do Painel */
+/* =========================================
+   CABEÇALHO DO PAINEL
+   ========================================= */
 .admin-header {
     background: var(--azul-precisa);
     padding: 15px 20px;
@@ -74,7 +76,9 @@ body {
     color: var(--azul-precisa);
 }
 
-/* Content Container */
+/* =========================================
+   CONTAINER E FORMULÁRIO
+   ========================================= */
 .admin-container {
     max-width: 700px;
     margin: 30px auto;
@@ -140,6 +144,7 @@ body {
     outline: none;
     background-color: var(--cinza-claro);
     transition: border-color 0.2s;
+    box-sizing: border-box;
 }
 
 .form-group input[type="text"]:focus,
@@ -148,7 +153,9 @@ body {
     background-color: var(--branco);
 }
 
-/* Upload de Imagem */
+/* =========================================
+   UPLOAD DE IMAGEM
+   ========================================= */
 .image-upload-container {
     position: relative;
     width: 100%;
@@ -230,7 +237,9 @@ body {
     opacity: 0.9;
 }
 
-/* Lista de Especificações Dinâmicas */
+/* =========================================
+   LISTA DE ESPECIFICAÇÕES DINÂMICAS
+   ========================================= */
 .specs-list {
     display: flex;
     flex-direction: column;
@@ -238,14 +247,17 @@ body {
     margin-bottom: 20px;
 }
 
+/* Bloco Corrigido (Sem Vazar e Alinhado na Base) */
 .spec-row {
     display: flex;
-    gap: 10px;
+    gap: 15px;
+    align-items: flex-end; /* Alinha os inputs por baixo, ignorando tamanhos de labels */
     background: var(--cinza-claro);
-    padding: 15px;
+    padding: 20px;
     border: 1px solid var(--cinza-borda);
     border-radius: 6px;
-    position: relative;
+    width: 100%;
+    box-sizing: border-box; /* Previne que o padding estoure a largura total */
 }
 
 .spec-field {
@@ -253,6 +265,12 @@ body {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    min-width: 0; /* Impede que o flexbox estoure o layout da coluna */
+}
+
+/* Dá um espaço maior (dobro) para o campo do meio "Descrição / Medida" */
+.spec-field:nth-child(2) {
+    flex: 2; 
 }
 
 .spec-field label {
@@ -260,9 +278,11 @@ body {
     font-weight: bold;
     color: var(--azul-precisa);
     text-transform: uppercase;
+    white-space: nowrap; /* Impede a quebra de linha feia nos títulos */
 }
 
 .spec-field input {
+    width: 100%;
     height: 40px;
     padding: 8px 12px;
     border: 1px solid var(--cinza-borda);
@@ -270,6 +290,7 @@ body {
     font-family: var(--fonte-leitura);
     font-size: 0.9rem;
     outline: none;
+    box-sizing: border-box; /* OBRIGATÓRIO: impede vazamento interno */
 }
 
 .spec-field input:focus {
@@ -285,13 +306,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 5px;
-    margin-top: 18px;
-    transition: transform 0.1s;
+    padding: 8px;
+    transition: transform 0.2s ease;
 }
 
 .btn-remove-spec:hover {
-    transform: scale(1.1);
+    transform: scale(1.15);
 }
 
 .btn-add-spec {
@@ -317,7 +337,9 @@ body {
     color: var(--branco);
 }
 
-/* Submissão do Formulário */
+/* =========================================
+   SUBMISSÃO DO FORMULÁRIO
+   ========================================= */
 .form-actions {
     margin-top: 30px;
 }
@@ -340,7 +362,96 @@ body {
     background: #e0531b;
 }
 
-/* Responsividade Agressiva para Ecrãs Móveis e Tablets */
+/* =========================================
+   TELA DE LOGIN ADMIN
+   ========================================= */
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 40px 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--cinza-borda);
+}
+
+.login-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--azul-precisa);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.form-group-login {
+    margin-bottom: 20px;
+}
+
+.form-group-login label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--azul-precisa);
+    font-size: 0.9rem;
+}
+
+.form-group-login input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--cinza-borda);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--preto-tecnico);
+    background-color: var(--cinza-claro);
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.form-group-login input:focus {
+    outline: none;
+    border-color: var(--laranja-precisa);
+    box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.15);
+    background-color: var(--branco);
+}
+
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    margin-top: 15px;
+    border-radius: 8px;
+}
+
+/* =========================================
+   BOTÃO SAIR FLUTUANTE
+   ========================================= */
+.btn-flutuante-sair {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: var(--vermelho-erro);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px; 
+    font-size: 0.95rem;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+    cursor: pointer;
+    z-index: 1000; 
+    transition: all 0.3s ease;
+}
+
+.btn-flutuante-sair:hover {
+    background-color: #c82333; 
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.6);
+}
+
+/* =========================================
+   RESPONSIVIDADE (MOBILE & TABLETS)
+   ========================================= */
 @media (max-width: 768px) {
     /* Empilha o cabeçalho */
     .admin-header {
@@ -376,6 +487,7 @@ body {
     /* Empilha os campos de especificação */
     .spec-row {
         flex-direction: column;
+        align-items: stretch; /* Garante que os campos ocupem 100% da largura no celular */
         gap: 15px;
         padding: 15px 10px;
     }
@@ -404,93 +516,4 @@ body {
     .image-upload-label {
         padding: 20px 10px;
     }
-}
-
-/* =========================================
-   TELA DE LOGIN ADMIN
-   ========================================= */
-
-.login-container {
-    max-width: 400px;
-    margin: 100px auto;
-    padding: 40px 30px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e2e8f0;
-}
-
-.login-title {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #1e293b;
-    font-size: 1.5rem;
-    font-weight: 700;
-}
-
-.form-group-login {
-    margin-bottom: 20px;
-}
-
-.form-group-login label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #475569;
-    font-size: 0.9rem;
-}
-
-.form-group-login input {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    font-size: 1rem;
-    color: #334155;
-    background-color: #f8fafc;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-}
-
-.form-group-login input:focus {
-    outline: none;
-    border-color: #ea580c; /* Laranja condizente com a marcação de erro/atenção */
-    box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.15);
-    background-color: #ffffff;
-}
-
-.btn-login {
-    width: 100%;
-    padding: 14px;
-    font-size: 1.05rem;
-    font-weight: bold;
-    margin-top: 15px;
-    border-radius: 8px;
-}
-
-/* =========================================
-   BOTÃO SAIR FLUTUANTE
-   ========================================= */
-
-.btn-flutuante-sair {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background-color: #ef4444;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 50px; /* Bordas bem arredondadas */
-    font-size: 0.95rem;
-    font-weight: bold;
-    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
-    cursor: pointer;
-    z-index: 1000; /* Garante que fique por cima de tudo */
-    transition: all 0.3s ease;
-}
-
-.btn-flutuante-sair:hover {
-    background-color: #dc2626; /* Fica um vermelho mais escuro ao passar o mouse */
-    transform: translateY(-3px); /* Efeito de elevação */
-    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6);
 }

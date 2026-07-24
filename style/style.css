@@ -207,18 +207,33 @@ body {
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
+/* =========================================
+   CABEÇALHO DO CARD (ALINHAMENTO DE TÍTULO)
+   ========================================= */
 .card-header {
     background: var(--azul-precisa);
     color: var(--branco);
-    padding: 12px 20px;
+    padding: 10px 15px;
     text-align: center;
+    /* Flexbox trava a caixa e centraliza o texto independentemente do tamanho */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 65px; /* Altura fixa garantida para caber 2 linhas sem distorcer o card */
 }
 
 .card-header h2 {
     font-family: var(--fonte-industrial);
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* Ajuste sutil para nomes mais compridos caberem melhor */
     text-transform: uppercase;
     margin: 0;
+    line-height: 1.3;
+    /* Trava de segurança: limita a 2 linhas máximas. Se passar, aplica reticências (...) */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .card-body-vertical {
@@ -228,22 +243,30 @@ body {
     flex-grow: 1;
 }
 
+/* =========================================
+   FOTO DO PRODUTO (ALINHAMENTO DE IMAGEM)
+   ========================================= */
 .product-visual-central {
     width: 100%;
-    padding: 20px;
-    background: white;
+    height: 200px; /* Trava absoluta da altura da caixa da imagem */
+    padding: 15px;
+    background: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
     border-bottom: 1px solid var(--cinza-borda);
+    overflow: hidden;
 }
 
 .product-visual-central img {
     max-width: 100%;
-    max-height: 200px;
-    object-fit: contain;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    /* O "contain" garante que a foto será escalada sem cortar bordas, respeitando a caixa de 200px */
+    object-fit: contain; 
+    display: block;
 }
-
 .product-data-full {
     width: 100%;
     padding: 15px;

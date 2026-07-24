@@ -152,20 +152,31 @@ function filtrarCategoria(categoria, elementoBotao) {
     }
 }
 
+// Variável do temporizador (Debounce)
+let temporizadorDebounce;
+
 function configurarBusca() {
-    // CORREÇÃO AQUI: Trocado de 'inputBusca' para 'busca' para bater com o HTML
+    // Busca o campo pelo ID exato do seu HTML
     const input = document.getElementById('busca'); 
     
-    // Trava de segurança: se o input não existir na tela, a função para aqui e não quebra o site
+    // Trava de segurança: se o input não existir, para sem quebrar o site
     if (!input) return; 
 
     input.addEventListener('keyup', () => {
         const termo = input.value.toLowerCase();
         const cards = document.querySelectorAll('.card-tecnico');
         
-        cards.forEach(card => {
-            const texto = card.innerText.toLowerCase();
-            card.style.display = texto.includes(termo) ? 'flex' : 'none';
-        });
+        // 1. O usuário digitou uma nova letra? Limpamos a ação anterior.
+        clearTimeout(temporizadorDebounce);
+
+        // 2. Agendamos a filtragem local para daqui a 300 milissegundos
+        temporizadorDebounce = setTimeout(() => {
+            
+            cards.forEach(card => {
+                const texto = card.innerText.toLowerCase();
+                card.style.display = texto.includes(termo) ? 'flex' : 'none';
+            });
+
+        }, 300); // 300ms de espera inteligente
     });
 }
