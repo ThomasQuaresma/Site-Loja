@@ -67,12 +67,18 @@ async function fazerLogin() {
     const senhaInput = document.getElementById("senhaLogin");
     const btn = document.getElementById("btnEntrar");
     
-    if(!emailInput || !senhaInput) return alert("Erro: Campos de login não encontrados.");
+    if(!emailInput || !senhaInput) {
+        mostrarAviso("Erro: Campos de login não encontrados.", "erro");
+        return;
+    }
     
     const email = emailInput.value; 
     const senha = senhaInput.value; 
 
-    if (!email || !senha) return alert("Preencha todos os campos.");
+    if (!email || !senha) {
+        mostrarAviso("Preencha todos os campos.", "aviso");
+        return;
+    }
 
     btn.innerText = "Autenticando...";
     btn.disabled = true;
@@ -83,7 +89,7 @@ async function fazerLogin() {
     });
 
     if(error) {
-        alert("Acesso negado. Verifique as credenciais.");
+        mostrarAviso("Acesso negado. Verifique as credenciais.", "erro");
         btn.innerText = "Acessar Painel";
         btn.disabled = false;
     } else {
@@ -195,7 +201,7 @@ async function criarNovaCategoria() {
     let nomeCategoria = input.value.trim().toUpperCase();
 
     if (!nomeCategoria) {
-        alert("Por favor, digite o nome da nova categoria.");
+        mostrarAviso("Por favor, digite o nome da nova categoria.", "aviso");
         return;
     }
 
@@ -207,11 +213,11 @@ async function criarNovaCategoria() {
         if (error) throw error;
 
         input.value = "";
-        alert("Categoria adicionada com sucesso!");
+        mostrarAviso("Categoria adicionada com sucesso!", "sucesso");
         await carregarCategorias();
     } catch (erro) {
         console.error("Erro ao gravar categoria:", erro);
-        alert("Erro ao criar categoria: " + erro.message);
+        mostrarAviso("Erro ao criar categoria: " + erro.message, "erro");
     } finally {
         btn.innerText = "Adicionar Rápido";
         btn.disabled = false;
@@ -399,7 +405,10 @@ function configurarUploadFoto() {
 
 async function processarSubmissao(event) {
     event.preventDefault();
-    if (!clienteDB) return alert("Erro de ligação ao banco.");
+    if (!clienteDB) {
+        mostrarAviso("Erro de ligação ao banco.", "erro");
+        return;
+    }
     
     // 1. Busca os elementos principais
     const btnSubmit = event.target.querySelector('button[type="submit"]');
@@ -409,7 +418,7 @@ async function processarSubmissao(event) {
 
     // 2. Trava de segurança (evita Null Reference)
     if (!btnSubmit || !inputTitulo || !inputCategoria || !inputImagem) {
-        alert("Erro fatal: Campos do formulário não encontrados na tela.");
+        mostrarAviso("Erro fatal: Campos do formulário não encontrados na tela.", "erro");
         return;
     }
 
@@ -419,7 +428,7 @@ async function processarSubmissao(event) {
     // Trava de segurança contra sessão expirada
     const { data: sessaoAtual } = await clienteDB.auth.getSession();
     if (!sessaoAtual.session) {
-        alert("Sua sessão expirou por inatividade. Faça login novamente (os seus dados não serão perdidos).");
+        mostrarAviso("Sua sessão expirou por inatividade. Faça login novamente (os seus dados não serão perdidos).", "aviso");
         document.getElementById("loginContainer").style.display = "block";
         document.getElementById("painelAdmin").style.display = "none";
         
@@ -449,7 +458,7 @@ async function processarSubmissao(event) {
     });
 
     if (especificacoes.length === 0) {
-        alert("Adicione pelo menos uma especificação técnica.");
+        mostrarAviso("Adicione pelo menos uma especificação técnica.", "aviso");
         btnSubmit.innerText = produtoIdEmEdicao ? "Atualizar Produto" : "Gravar Produto";
         btnSubmit.disabled = false;
         return;
@@ -500,16 +509,51 @@ async function processarSubmissao(event) {
         const { error: specError } = await clienteDB.from('especificacoes').insert(especificacoesComId);
         if (specError) throw specError;
 
-        alert(produtoIdEmEdicao ? "Produto atualizado com sucesso!" : "Produto cadastrado com sucesso!");
+        mostrarAviso(produtoIdEmEdicao ? "Produto atualizado com sucesso!" : "Produto cadastrado com sucesso!", "sucesso");
         
         limparFormulario();
         carregarListaAdmin(); 
         
     } catch (erro) {
         console.error("Erro na gravação:", erro);
-        alert("Ocorreu um erro ao salvar: " + erro.message);
+        mostrarAviso("Ocorreu um erro ao salvar: " + erro.message, "erro");
     } finally {
         btnSubmit.innerText = produtoIdEmEdicao ? "Atualizar Produto" : "Gravar Produto";
         btnSubmit.disabled = false;
     }
+}
+
+// =========================================
+// SISTEMA DE NOTIFICAÇÕES (TOASTS)
+// =========================================
+function mostrarAviso(mensagem, tipo = 'aviso') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    // Cria a caixinha
+    const toast = document.createElement('div');
+    toast.className = `toast-moderno toast-${tipo}`;
+    
+    // Define o ícone de acordo com o tipo
+    let icone = '⚠️';
+    if (tipo === 'sucesso') icone = '✅';
+    if (tipo === 'erro') icone = '❌';
+
+    // Insere o conteúdo
+    toast.innerHTML = `<span style="font-size: 1.2rem;">${icone}</span> <span>${mensagem}</span>`;
+    
+    // Adiciona na tela
+    container.appendChild(toast);
+
+    // Pequeno atraso para a animação CSS funcionar suavemente
+    setTimeout(() => {
+        toast.classList.add('mostrar');
+    }, 10);
+
+    // Remove automaticamente após 3.5 segundos
+    setTimeout(() => {
+        toast.classList.remove('mostrar');
+        // Espera a animação de saída acabar antes de excluir o elemento do HTML
+        setTimeout(() => toast.remove(), 400); 
+    }, 3500);
 }
