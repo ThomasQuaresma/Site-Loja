@@ -10,14 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
     try { 
         if (window.supabase) { 
             clienteDB = window.supabase.createClient(supabaseUrl, supabaseKey); 
-            
-            // 1. Inicia o ouvinte de segurança em tempo real (compatível com os IDs do HTML)
             configurarOuvinteDeSessao();
-            
-            // 2. Verifica a sessão atual
             verificarSessao(); 
-            
-            // 3. Configura os eventos visuais e botões
             configurarEventosGerais();
         } else {
             console.error("Erro: SDK do Supabase não encontrado no HTML.");
@@ -107,7 +101,7 @@ async function fazerLogout() {
 // =========================================
 
 function configurarEventosGerais() {
-    adicionarLinhaEspecificacaoBlindada('', '', '');
+    adicionarLinhaEspecificacaoBlindada('', '');
     configurarUploadFoto();
     
     const btnEntrar = document.getElementById("btnEntrar");
@@ -118,7 +112,7 @@ function configurarEventosGerais() {
     
     const btnAddSpec = document.getElementById("btnAddSpec");
     if (btnAddSpec) {
-        btnAddSpec.addEventListener("click", () => adicionarLinhaEspecificacaoBlindada('', '', ''));
+        btnAddSpec.addEventListener("click", () => adicionarLinhaEspecificacaoBlindada('', ''));
     }
     
     const containerSpecs = document.getElementById("especificacoesContainer");
@@ -187,17 +181,14 @@ async function carregarCategorias() {
 }
 
 async function criarNovaCategoria() {
-    // 1. Busca os elementos na tela
     const input = document.getElementById("inputNovaCategoria");
     const btn = document.getElementById("btnCriarCategoria");
     
-    // 2. Trava de segurança (evita Null Reference)
     if (!input || !btn) {
         console.error("Erro: Campos de nova categoria não encontrados no HTML.");
         return; 
     }
 
-    // 3. Agora sim, extrai o valor com segurança
     let nomeCategoria = input.value.trim().toUpperCase();
 
     if (!nomeCategoria) {
@@ -254,6 +245,10 @@ async function carregarListaAdmin() {
             const tituloProd = document.createElement("strong");
             tituloProd.textContent = prod.titulo;
             
+            // Etiqueta visual de produto oculto
+            const badgeOculto = prod.visivel === false ? '<span style="color: #ef4444; font-size: 0.75rem; margin-left: 10px; font-weight: bold;">[OCULTO]</span>' : '';
+            tituloProd.innerHTML += badgeOculto;
+            
             const catProd = document.createElement("span");
             catProd.style.cssText = "font-size: 0.85rem; color: #666;";
             catProd.textContent = ` (${prod.categoria})`;
@@ -299,6 +294,11 @@ function prepararEdicao(idProduto) {
     document.getElementById("categoria").value = produto.categoria;
     document.querySelector('.form-title').innerText = "Editar Produto: " + produto.titulo;
     
+    const checkboxVisivel = document.getElementById("visivel");
+    if (checkboxVisivel) {
+        checkboxVisivel.checked = produto.visivel !== false; // Se for null ou true, fica marcado
+    }
+    
     const imagePreview = document.getElementById("imagePreview");
     const previewImg = document.getElementById("previewImg");
     const labelUpload = document.querySelector(".image-upload-label");
@@ -318,10 +318,10 @@ function prepararEdicao(idProduto) {
     
     if (produto.especificacoes && produto.especificacoes.length > 0) {
         produto.especificacoes.forEach(spec => {
-            adicionarLinhaEspecificacaoBlindada(spec.codigo, spec.descricao, spec.embalagem);
+            adicionarLinhaEspecificacaoBlindada(spec.codigo, spec.descricao);
         });
     } else {
-        adicionarLinhaEspecificacaoBlindada('', '', '');
+        adicionarLinhaEspecificacaoBlindada('', '');
     }
 
     document.getElementById("btnCancelarEdicao").style.display = "block";
@@ -337,26 +337,28 @@ function limparFormulario() {
     document.getElementById("formProduto").reset();
     document.querySelector('.form-title').innerText = "Novo Produto";
     
+    const checkboxVisivel = document.getElementById("visivel");
+    if (checkboxVisivel) checkboxVisivel.checked = true;
+
     document.getElementById("imagePreview").style.display = "none";
     document.querySelector(".image-upload-label").style.display = "flex";
     document.getElementById("previewImg").src = "";
     
     const container = document.getElementById("especificacoesContainer");
     container.innerHTML = "";
-    adicionarLinhaEspecificacaoBlindada('', '', '');
+    adicionarLinhaEspecificacaoBlindada('', '');
     
     document.getElementById("btnCancelarEdicao").style.display = "none";
     document.querySelector('#formProduto button[type="submit"]').innerText = "Gravar Produto";
 }
 
-function adicionarLinhaEspecificacaoBlindada(codigoValor, descricaoValor, embalagemValor) {
+function adicionarLinhaEspecificacaoBlindada(codigoValor, descricaoValor) {
     const container = document.getElementById("especificacoesContainer");
     if (!container) return;
     
     const novaLinha = document.createElement("div");
     novaLinha.className = "spec-row";
     
-    // AQUI ESTÁ O SEGREDO: O HTML injetado pelo JS não tem mais o campo de embalagem
     novaLinha.innerHTML = `
         <div class="spec-field"><label>Código</label><input type="text" required class="input-codigo"></div>
         <div class="spec-field"><label>Descrição / Medida</label><input type="text" required class="input-descricao"></div>
@@ -409,13 +411,11 @@ async function processarSubmissao(event) {
         return;
     }
     
-    // 1. Busca os elementos principais
     const btnSubmit = event.target.querySelector('button[type="submit"]');
     const inputTitulo = document.getElementById("titulo");
     const inputCategoria = document.getElementById("categoria");
     const inputImagem = document.getElementById("imagem");
 
-    // 2. Trava de segurança (evita Null Reference)
     if (!btnSubmit || !inputTitulo || !inputCategoria || !inputImagem) {
         mostrarAviso("Erro fatal: Campos do formulário não encontrados na tela.", "erro");
         return;
@@ -424,10 +424,9 @@ async function processarSubmissao(event) {
     btnSubmit.innerText = "A processar...";
     btnSubmit.disabled = true;
 
-    // Trava de segurança contra sessão expirada
     const { data: sessaoAtual } = await clienteDB.auth.getSession();
     if (!sessaoAtual.session) {
-        mostrarAviso("Sua sessão expirou por inatividade. Faça login novamente (os seus dados não serão perdidos).", "aviso");
+        mostrarAviso("Sua sessão expirou por inatividade. Faça login novamente.", "aviso");
         document.getElementById("loginContainer").style.display = "block";
         document.getElementById("painelAdmin").style.display = "none";
         
@@ -436,9 +435,11 @@ async function processarSubmissao(event) {
         return; 
     }
 
-    // 3. Agora sim, extrai os valores com segurança
     const titulo = inputTitulo.value;
     const categoria = inputCategoria.value;
+    
+    // Captura o estado do novo botão
+    const isVisivel = document.getElementById("visivel").checked;
     
     const especificacoes = [];
     document.querySelectorAll(".spec-row").forEach(linha => {
@@ -466,12 +467,7 @@ async function processarSubmissao(event) {
 
         if (inputImagem.files.length > 0) {
             const ficheiro = inputImagem.files[0];
-            
-            const tituloLimpo = titulo
-                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-                .replace(/[^a-zA-Z0-9]/g, '_')
-                .toLowerCase();
-            
+            const tituloLimpo = titulo.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
             const extensao = ficheiro.name.split('.').pop();
             const nomeFicheiro = `${tituloLimpo}_${Date.now()}.${extensao}`;
 
@@ -487,16 +483,15 @@ async function processarSubmissao(event) {
         if (produtoIdEmEdicao) {
             const { error: produtoError } = await clienteDB
                 .from('produtos')
-                .update({ titulo: titulo, categoria: categoria, imagem_url: imagemUrl })
+                .update({ titulo: titulo, categoria: categoria, imagem_url: imagemUrl, visivel: isVisivel })
                 .eq('id', produtoIdEmEdicao);
             if (produtoError) throw produtoError;
 
             await clienteDB.from('especificacoes').delete().eq('produto_id', produtoIdEmEdicao);
-        } 
-        else {
+        } else {
             const { data: produtoData, error: produtoError } = await clienteDB
                 .from('produtos')
-                .insert([{ titulo: titulo, categoria: categoria, imagem_url: imagemUrl }])
+                .insert([{ titulo: titulo, categoria: categoria, imagem_url: imagemUrl, visivel: isVisivel }])
                 .select();
             if (produtoError) throw produtoError;
             idTratado = produtoData[0].id;
@@ -527,30 +522,23 @@ function mostrarAviso(mensagem, tipo = 'aviso') {
     const container = document.getElementById('toast-container');
     if (!container) return;
 
-    // Cria a caixinha
     const toast = document.createElement('div');
     toast.className = `toast-moderno toast-${tipo}`;
     
-    // Define o ícone de acordo com o tipo
     let icone = '⚠️';
     if (tipo === 'sucesso') icone = '✅';
     if (tipo === 'erro') icone = '❌';
 
-    // Insere o conteúdo
     toast.innerHTML = `<span style="font-size: 1.2rem;">${icone}</span> <span>${mensagem}</span>`;
     
-    // Adiciona na tela
     container.appendChild(toast);
 
-    // Pequeno atraso para a animação CSS funcionar suavemente
     setTimeout(() => {
         toast.classList.add('mostrar');
     }, 10);
 
-    // Remove automaticamente após 3.5 segundos
     setTimeout(() => {
         toast.classList.remove('mostrar');
-        // Espera a animação de saída acabar antes de excluir o elemento do HTML
         setTimeout(() => toast.remove(), 400); 
     }, 3500);
 }

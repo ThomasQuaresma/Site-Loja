@@ -63,6 +63,7 @@ async function carregarProdutos() {
         const { data, error } = await clienteDB
             .from('produtos')
             .select(`*, especificacoes (*)`)
+            .eq('visivel', true) /* A CORREÇÃO ESTÁ AQUI: Filtra apenas os visíveis */
             .order('created_at', { ascending: false });
 
         if (error) throw error;
