@@ -87,7 +87,7 @@
 
                 <section class="form-section">
                     <h2 class="section-title">Especificações Técnicas</h2>
-                    <p class="section-subtitle">Adicione as medidas, códigos e embalagens deste produto.</p>
+                    <p class="section-subtitle">Adicione as medidas e códigos deste produto.</p>
                     
                     <div id="especificacoesContainer" class="specs-list">
                         </div>
@@ -114,22 +114,24 @@
                 </div>
             </section>
         </main>
-        <div id="toast-container"></div>
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-        <script src="./script/admin.js"></script>
-        <script>
-            /* Desativado temporariamente para evitar erro de sintaxe
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('./sw.js')
-                        .then(reg => console.log('✅ App pronta para instalar no telemóvel!'))
-                        .catch(err => console.error('❌ Erro no registo do App:', err));
-                });
-            }
-            */
-        </script>
+    </div> <!-- Fechamento da Div do Painel Admin -->
 
-    </div>
-    <!-- CONTAINER PARA OS AVISOS FLUTUANTES -->
+    <!-- CONTAINER PARA OS AVISOS FLUTUANTES (Sempre visível) -->
+    <div id="toast-container"></div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./script/admin.js"></script>
+    <script>
+        /* Desativado temporariamente para evitar erro de sintaxe
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('✅ App pronta para instalar no telemóvel!'))
+                    .catch(err => console.error('❌ Erro no registo do App:', err));
+            });
+        }
+        */
+    </script>
 </body>
 </html>

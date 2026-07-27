@@ -356,16 +356,15 @@ function adicionarLinhaEspecificacaoBlindada(codigoValor, descricaoValor, embala
     const novaLinha = document.createElement("div");
     novaLinha.className = "spec-row";
     
+    // AQUI ESTÁ O SEGREDO: O HTML injetado pelo JS não tem mais o campo de embalagem
     novaLinha.innerHTML = `
         <div class="spec-field"><label>Código</label><input type="text" required class="input-codigo"></div>
         <div class="spec-field"><label>Descrição / Medida</label><input type="text" required class="input-descricao"></div>
-        <div class="spec-field"><label>Embalagem</label><input type="text" required class="input-embalagem"></div>
         <button type="button" class="btn-remove-spec">🗑️</button>
     `;
     
     novaLinha.querySelector(".input-codigo").value = codigoValor || '';
     novaLinha.querySelector(".input-descricao").value = descricaoValor || '';
-    novaLinha.querySelector(".input-embalagem").value = embalagemValor || '';
     
     container.appendChild(novaLinha);
 }
@@ -445,14 +444,12 @@ async function processarSubmissao(event) {
     document.querySelectorAll(".spec-row").forEach(linha => {
         const inputCodigo = linha.querySelector(".input-codigo");
         const inputDescricao = linha.querySelector(".input-descricao");
-        const inputEmbalagem = linha.querySelector(".input-embalagem");
         
-        // Validação de segurança para as linhas dinâmicas também
-        if (inputCodigo && inputDescricao && inputEmbalagem) {
+        if (inputCodigo && inputDescricao) {
             especificacoes.push({
                 codigo: inputCodigo.value,
                 descricao: inputDescricao.value,
-                embalagem: inputEmbalagem.value
+                embalagem: '1' // Preenchimento automático para não quebrar a tabela do banco
             });
         }
     });

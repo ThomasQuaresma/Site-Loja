@@ -81,7 +81,7 @@ async function carregarProdutos() {
 
 function renderizarProdutos(produtos) {
     const container = document.getElementById('catalogoProdutos');
-    if (!container) return; // Trava de segurança
+    if (!container) return; 
     
     if(produtos.length === 0) {
         container.innerHTML = '<h3>Nenhum produto encontrado nesta categoria.</h3>';
@@ -99,7 +99,6 @@ function renderizarProdutos(produtos) {
                     <tr>
                         <td>${spec.codigo || '-'}</td>
                         <td>${spec.descricao || '-'}</td>
-                        <td>${spec.embalagem || 'PT 1'}</td>
                     </tr>`;
             });
         }
@@ -121,7 +120,6 @@ function renderizarProdutos(produtos) {
                             <tr>
                                 <th>CÓDIGO</th>
                                 <th>DESCRIÇÃO / MEDIDA</th>
-                                <th>EMB.</th>
                             </tr>
                         </thead>
                         <tbody>

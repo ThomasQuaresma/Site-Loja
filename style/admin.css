@@ -270,7 +270,7 @@ body {
 
 /* Dá um espaço maior (dobro) para o campo do meio "Descrição / Medida" */
 .spec-field:nth-child(2) {
-    flex: 2; 
+    flex: 3; 
 }
 
 .spec-field label {
