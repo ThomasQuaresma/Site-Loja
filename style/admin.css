@@ -337,6 +337,65 @@ body {
     color: var(--branco);
 }
 
+/* Agrupamento dos botões laterais */
+.spec-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 5px; /* Alinha visualmente com os inputs */
+}
+
+/* Estilo geral para todos os botões de controle da linha */
+.btn-move-up, 
+.btn-move-down, 
+.btn-remove-spec {
+    background: transparent;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: 4px;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.btn-move-up:hover, 
+.btn-move-down:hover {
+    transform: translateY(-2px);
+    background: #e2e8f0;
+}
+
+.btn-remove-spec {
+    color: var(--vermelho-erro);
+}
+
+.btn-remove-spec:hover {
+    transform: scale(1.1);
+    background: #fee2e2;
+}
+
+/* =========================================
+   AJUSTE RESPONSIVO DOS BOTÕES (MOBILE)
+   ========================================= */
+@media (max-width: 768px) {
+    .spec-controls {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 10px;
+        background: #e2e8f0;
+        padding: 8px;
+        border-radius: 6px;
+    }
+
+    /* Remove o texto extra que havíamos colocado no mobile para voltar a usar só os ícones */
+    .btn-remove-spec::before {
+        content: none;
+    }
+}
+
 /* =========================================
    SUBMISSÃO DO FORMULÁRIO
    ========================================= */

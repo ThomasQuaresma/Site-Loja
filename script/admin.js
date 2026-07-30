@@ -116,12 +116,31 @@ function configurarEventosGerais() {
     }
     
     const containerSpecs = document.getElementById("especificacoesContainer");
-    if (containerSpecs) {
-        containerSpecs.addEventListener("click", function(event) {
-            if (event.target.classList.contains("btn-remove-spec")) {
-                event.target.closest(".spec-row").remove();
-            }
-        });
+        if (containerSpecs) {
+            containerSpecs.addEventListener("click", function(event) {
+                const linha = event.target.closest(".spec-row");
+                if (!linha) return;
+
+                // Função de Remover
+                if (event.target.classList.contains("btn-remove-spec")) {
+                    linha.remove();
+                }
+                // Função de Subir
+                else if (event.target.classList.contains("btn-move-up")) {
+                    const anterior = linha.previousElementSibling;
+                    if (anterior) {
+                        linha.parentNode.insertBefore(linha, anterior);
+                    }
+                }
+                // Função de Descer
+                else if (event.target.classList.contains("btn-move-down")) {
+                    const proximo = linha.nextElementSibling;
+                    if (proximo) {
+                        // O insertBefore insere ANTES do próximo do próximo (ou seja, inverte as posições)
+                        linha.parentNode.insertBefore(proximo, linha);
+                    }
+                }
+            });
     }
 
     const containerLista = document.getElementById("listaProdutosAdmin");
@@ -362,7 +381,11 @@ function adicionarLinhaEspecificacaoBlindada(codigoValor, descricaoValor) {
     novaLinha.innerHTML = `
         <div class="spec-field"><label>Código</label><input type="text" required class="input-codigo"></div>
         <div class="spec-field"><label>Descrição / Medida</label><input type="text" required class="input-descricao"></div>
-        <button type="button" class="btn-remove-spec">🗑️</button>
+        <div class="spec-controls">
+            <button type="button" class="btn-move-up" title="Mover para cima">⬆️</button>
+            <button type="button" class="btn-move-down" title="Mover para baixo">⬇️</button>
+            <button type="button" class="btn-remove-spec" title="Remover item">🗑️</button>
+        </div>
     `;
     
     novaLinha.querySelector(".input-codigo").value = codigoValor || '';
