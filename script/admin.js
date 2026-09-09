@@ -103,7 +103,8 @@ async function fazerLogout() {
 function configurarEventosGerais() {
     adicionarLinhaEspecificacaoBlindada('', '');
     configurarUploadFoto();
-    
+    configurarAbasAdmin();
+
     const btnEntrar = document.getElementById("btnEntrar");
     if (btnEntrar) btnEntrar.addEventListener("click", fazerLogin);
 
@@ -166,6 +167,20 @@ function configurarEventosGerais() {
     if (btnCriarCategoria) {
         btnCriarCategoria.addEventListener("click", criarNovaCategoria);
     }
+}
+
+function configurarAbasAdmin() {
+    const botoes = document.querySelectorAll(".admin-tab-btn");
+    botoes.forEach(botao => {
+        botao.addEventListener("click", () => {
+            botoes.forEach(b => b.classList.remove("ativo"));
+            botao.classList.add("ativo");
+
+            document.querySelectorAll(".admin-tab-painel").forEach(painel => {
+                painel.style.display = painel.id === botao.dataset.tab ? "block" : "none";
+            });
+        });
+    });
 }
 
 // =========================================

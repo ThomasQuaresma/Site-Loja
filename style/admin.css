@@ -77,6 +77,58 @@ body {
 }
 
 /* =========================================
+   ABAS DO PAINEL (PRODUTOS / CLIENTES)
+   ========================================= */
+.admin-tabs {
+    display: flex;
+    gap: 8px;
+    background: var(--branco);
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--cinza-borda);
+    position: sticky;
+    top: 68px;
+    z-index: 90;
+    overflow-x: auto;
+}
+
+.admin-tab-btn {
+    background: var(--cinza-claro);
+    border: 1px solid var(--cinza-borda);
+    color: var(--azul-precisa);
+    font-family: var(--fonte-leitura);
+    font-weight: bold;
+    font-size: 0.9rem;
+    padding: 10px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.admin-tab-btn:hover {
+    border-color: var(--laranja-precisa);
+}
+
+.admin-tab-btn.ativo {
+    background: var(--laranja-precisa);
+    border-color: var(--laranja-precisa);
+    color: var(--branco);
+}
+
+/* =========================================
+   LISTAS COM ROLAGEM INTERNA
+   ========================================= */
+.lista-admin-scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+    max-height: 65vh;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+/* =========================================
    CONTAINER E FORMULÁRIO
    ========================================= */
 .admin-container {

@@ -46,86 +46,95 @@
             <a href="html/catalogo.html" class="btn-back">Ver Catálogo</a>
         </header>
 
+        <nav class="admin-tabs">
+            <button type="button" class="admin-tab-btn ativo" data-tab="tabProdutos">📦 Produtos</button>
+            <button type="button" class="admin-tab-btn" data-tab="tabClientes">🧾 Solicitações de Crédito</button>
+        </nav>
+
         <main class="admin-container">
-            <form id="formProduto" class="admin-form">
-                <h1 class="form-title">Novo Produto</h1>
+            <div id="tabProdutos" class="admin-tab-painel">
+                <form id="formProduto" class="admin-form">
+                    <h1 class="form-title">Novo Produto</h1>
 
-                <section class="form-section">
-                    <div class="form-group">
-                        <label for="titulo">Título do Produto</label>
-                        <input type="text" id="titulo" required placeholder="Ex: Cabo Flexível 750V">
-                    </div>
+                    <section class="form-section">
+                        <div class="form-group">
+                            <label for="titulo">Título do Produto</label>
+                            <input type="text" id="titulo" required placeholder="Ex: Cabo Flexível 750V">
+                        </div>
 
-                    <div class="form-group">
-                        <label for="categoria">Categoria</label>
-                        <select id="categoria" required style="margin-bottom: 10px;">
-                            <option value="" disabled selected>A carregar categorias...</option>
-                        </select>
-                        
-                        <!-- Área para a equipe criar novas categorias dinamicamente -->
-                        <div style="display: flex; gap: 10px; background: #e2e8f0; padding: 10px; border-radius: 6px; margin-bottom: 15px;">
-                            <input type="text" id="inputNovaCategoria" placeholder="Faltou alguma? Digite aqui..." style="flex: 1; margin: 0; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.9rem;">
-                            <button type="button" id="btnCriarCategoria" class="btn-submit" style="width: auto; padding: 8px 15px; font-size: 0.9rem; margin-top: 0;">Adicionar Rápido</button>
-                        </div>
-                    </div>
-                        <!-- NOVO BOTÃO DE VISIBILIDADE -->
-                        <div style="display: flex; align-items: center; gap: 10px; margin-top: 20px; background: #f8fafc; padding: 15px; border: 1px solid #cbd5e1; border-radius: 6px;">
-                            <input type="checkbox" id="visivel" checked style="width: 20px; height: 20px; cursor: pointer; accent-color: #F06630;">
-                            <label for="visivel" style="margin: 0; cursor: pointer; font-weight: bold; color: #1F3559;">Produto Visível no Catálogo Público</label>
-                        </div>
-                    <div class="form-group">
-                        <label>Foto do Produto</label>
-                        <div class="image-upload-container">
-                            <label for="imagem" class="image-upload-label">
-                                <span class="upload-icon">📷</span>
-                                <span class="upload-text">Tirar foto ou escolher ficheiro</span>
-                            </label>
-                            <input type="file" id="imagem" accept="image/*" capture="environment" class="image-input">
-                            <div class="image-preview" id="imagePreview" style="display: none;">
-                                <img src="" alt="Antevisão da Imagem" id="previewImg">
-                                <button type="button" class="btn-remove-image" id="btnRemoveImage">Remover Foto</button>
+                        <div class="form-group">
+                            <label for="categoria">Categoria</label>
+                            <select id="categoria" required style="margin-bottom: 10px;">
+                                <option value="" disabled selected>A carregar categorias...</option>
+                            </select>
+
+                            <!-- Área para a equipe criar novas categorias dinamicamente -->
+                            <div style="display: flex; gap: 10px; background: #e2e8f0; padding: 10px; border-radius: 6px; margin-bottom: 15px;">
+                                <input type="text" id="inputNovaCategoria" placeholder="Faltou alguma? Digite aqui..." style="flex: 1; margin: 0; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.9rem;">
+                                <button type="button" id="btnCriarCategoria" class="btn-submit" style="width: auto; padding: 8px 15px; font-size: 0.9rem; margin-top: 0;">Adicionar Rápido</button>
                             </div>
                         </div>
+                            <!-- NOVO BOTÃO DE VISIBILIDADE -->
+                            <div style="display: flex; align-items: center; gap: 10px; margin-top: 20px; background: #f8fafc; padding: 15px; border: 1px solid #cbd5e1; border-radius: 6px;">
+                                <input type="checkbox" id="visivel" checked style="width: 20px; height: 20px; cursor: pointer; accent-color: #F06630;">
+                                <label for="visivel" style="margin: 0; cursor: pointer; font-weight: bold; color: #1F3559;">Produto Visível no Catálogo Público</label>
+                            </div>
+                        <div class="form-group">
+                            <label>Foto do Produto</label>
+                            <div class="image-upload-container">
+                                <label for="imagem" class="image-upload-label">
+                                    <span class="upload-icon">📷</span>
+                                    <span class="upload-text">Tirar foto ou escolher ficheiro</span>
+                                </label>
+                                <input type="file" id="imagem" accept="image/*" capture="environment" class="image-input">
+                                <div class="image-preview" id="imagePreview" style="display: none;">
+                                    <img src="" alt="Antevisão da Imagem" id="previewImg">
+                                    <button type="button" class="btn-remove-image" id="btnRemoveImage">Remover Foto</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="form-section">
+                        <h2 class="section-title">Especificações Técnicas</h2>
+                        <p class="section-subtitle">Adicione as medidas e códigos deste produto.</p>
+
+                        <div id="especificacoesContainer" class="specs-list">
+                            </div>
+
+                        <button type="button" class="btn-add-spec" id="btnAddSpec">
+                            <span>+</span> Adicionar Medida ou Código
+                        </button>
+                    </section>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">Gravar Produto</button>
+                    </div>
+                </form>
+                <section class="form-section" style="margin-top: 40px;">
+                    <h2 class="section-title">Produtos Cadastrados</h2>
+                    <p class="section-subtitle">Clique no botão "Editar" ao lado do produto para alterar suas informações ou medidas.</p>
+
+                    <div id="listaProdutosAdmin" class="lista-admin-scroll">
+                        <p>A carregar produtos...</p>
+                    </div>
+
+                    <div style="margin-top: 20px; text-align: center;">
+                        <button type="button" id="btnCancelarEdicao" class="btn-remove-image" style="display: none; width: auto; padding: 10px 20px; margin: 0 auto;">Cancelar Edição e Limpar Formulário</button>
                     </div>
                 </section>
+            </div>
 
+            <div id="tabClientes" class="admin-tab-painel" style="display: none;">
                 <section class="form-section">
-                    <h2 class="section-title">Especificações Técnicas</h2>
-                    <p class="section-subtitle">Adicione as medidas e códigos deste produto.</p>
-                    
-                    <div id="especificacoesContainer" class="specs-list">
-                        </div>
+                    <h2 class="section-title">Solicitações de Crédito</h2>
+                    <p class="section-subtitle">Fichas cadastrais enviadas pelo link de cadastro. Clique em uma solicitação para ver os dados completos e registrar a análise de crédito.</p>
 
-                    <button type="button" class="btn-add-spec" id="btnAddSpec">
-                        <span>+</span> Adicionar Medida ou Código
-                    </button>
+                    <div id="listaClientesAdmin" class="lista-admin-scroll">
+                        <p>A carregar solicitações...</p>
+                    </div>
                 </section>
-
-                <div class="form-actions">
-                    <button type="submit" class="btn-submit">Gravar Produto</button>
-                </div>
-            </form>
-            <section class="form-section" style="margin-top: 40px;">
-                <h2 class="section-title">Produtos Cadastrados</h2>
-                <p class="section-subtitle">Clique no botão "Editar" ao lado do produto para alterar suas informações ou medidas.</p>
-                
-                <div id="listaProdutosAdmin" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
-                    <p>A carregar produtos...</p>
-                </div>
-                
-                <div style="margin-top: 20px; text-align: center;">
-                    <button type="button" id="btnCancelarEdicao" class="btn-remove-image" style="display: none; width: auto; padding: 10px 20px; margin: 0 auto;">Cancelar Edição e Limpar Formulário</button>
-                </div>
-            </section>
-
-            <section class="form-section" style="margin-top: 40px;">
-                <h2 class="section-title">Solicitações de Crédito</h2>
-                <p class="section-subtitle">Fichas cadastrais enviadas pelo link de cadastro. Clique em uma solicitação para ver os dados completos e registrar a análise de crédito.</p>
-
-                <div id="listaClientesAdmin" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
-                    <p>A carregar solicitações...</p>
-                </div>
-            </section>
+            </div>
         </main>
     </div> <!-- Fechamento da Div do Painel Admin -->
 

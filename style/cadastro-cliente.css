@@ -17,7 +17,7 @@ body {
 .cadastro-container {
     max-width: 820px;
     margin: 0 auto;
-    padding: 130px 20px 60px;
+    padding: 20px 20px 60px;
 }
 
 .cadastro-card {
@@ -384,7 +384,7 @@ body {
 
 @media (max-width: 600px) {
     .cadastro-container {
-        padding-top: 170px;
+        padding-top: 20px;
     }
 
     .cadastro-card {
