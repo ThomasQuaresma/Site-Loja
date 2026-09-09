@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha Cadastral e Solicitação de Crédito | Precisa Elétrica</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/cadastro-cliente.css">
+    <link rel="icon" type="image/png" href="../img/favicon.png">
+</head>
+<body>
+    <header class="navbar">
+        <div class="brand-container">
+            <span class="brand-main">PRECISA</span>
+            <span class="brand-sub">Base de Suprimentos</span>
+        </div>
+        <span class="navbar-nota">Formulário exclusivo de cadastro</span>
+    </header>
+
+    <main class="cadastro-container">
+        <section class="cadastro-card">
+            <span class="subtitulo-secao">DA NECESSIDADE AO FORNECIMENTO</span>
+            <h1 class="titulo-secao">Ficha Cadastral e Solicitação de Crédito</h1>
+            <p class="cadastro-intro">Preencha os dados abaixo com atenção. Após o envio, nossa equipe fará a análise cadastral e entrará em contato para informar as condições de crédito aprovadas.</p>
+
+            <form id="formCadastroCliente" class="form-cadastro">
+
+                <!-- 1. DADOS DA EMPRESA -->
+                <fieldset class="ficha-secao">
+                    <legend><span class="secao-numero">1</span> Dados da Empresa</legend>
+
+                    <div class="form-group">
+                        <label for="razaoSocial">Razão Social *</label>
+                        <input type="text" id="razaoSocial" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nomeFantasia">Nome Fantasia</label>
+                        <input type="text" id="nomeFantasia">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cnpj">CNPJ *</label>
+                            <input type="text" id="cnpj" required placeholder="00.000.000/0000-00">
+                        </div>
+                        <div class="form-group">
+                            <label for="inscricaoEstadual">Inscrição Estadual</label>
+                            <input type="text" id="inscricaoEstadual">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dataFundacao">Data de Fundação</label>
+                            <input type="date" id="dataFundacao">
+                        </div>
+                        <div class="form-group">
+                            <label for="segmentoAtividade">Segmento / Atividade</label>
+                            <input type="text" id="segmentoAtividade">
+                        </div>
+                        <div class="form-group">
+                            <label for="qtdFuncionarios">Quantidade de Funcionários</label>
+                            <input type="number" id="qtdFuncionarios" min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="endereco">Endereço *</label>
+                        <input type="text" id="endereco" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bairro">Bairro</label>
+                            <input type="text" id="bairro">
+                        </div>
+                        <div class="form-group">
+                            <label for="cidade">Cidade *</label>
+                            <input type="text" id="cidade" required>
+                        </div>
+                        <div class="form-group form-group-uf">
+                            <label for="uf">UF *</label>
+                            <select id="uf" required>
+                                <option value="" disabled selected>UF</option>
+                                <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+                                <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+                                <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+                                <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+                                <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+                                <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+                                <option>SP</option><option>SE</option><option>TO</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cep">CEP</label>
+                            <input type="text" id="cep" placeholder="00000-000">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="telefone">Telefone *</label>
+                            <input type="tel" id="telefone" required placeholder="(19) 99999-9999">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail *</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="site">Site</label>
+                            <input type="text" id="site" placeholder="www.seusite.com.br">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="responsavelCompras">Responsável pelas Compras *</label>
+                            <input type="text" id="responsavelCompras" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cargoCompras">Cargo</label>
+                            <input type="text" id="cargoCompras">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="emailFinanceiro">E-mail do Financeiro</label>
+                            <input type="email" id="emailFinanceiro">
+                        </div>
+                        <div class="form-group">
+                            <label for="telefoneFinanceiro">Telefone do Financeiro</label>
+                            <input type="tel" id="telefoneFinanceiro">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="responsavelLegal">Responsável Legal</label>
+                            <input type="text" id="responsavelLegal">
+                        </div>
+                        <div class="form-group">
+                            <label for="cargoResponsavelLegal">Cargo</label>
+                            <input type="text" id="cargoResponsavelLegal">
+                        </div>
+                        <div class="form-group">
+                            <label for="contatoResponsavelLegal">Telefone / E-mail</label>
+                            <input type="text" id="contatoResponsavelLegal">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- 2. SOLICITAÇÃO DE CRÉDITO -->
+                <fieldset class="ficha-secao">
+                    <legend><span class="secao-numero">2</span> Solicitação de Crédito e Condições de Pagamento</legend>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="limiteCredito">Limite de crédito pretendido</label>
+                            <input type="text" id="limiteCredito" placeholder="Ex: R$ 5.000,00">
+                        </div>
+                        <div class="form-group">
+                            <label for="volumeMedio">Volume médio mensal de compras</label>
+                            <input type="text" id="volumeMedio" placeholder="Ex: R$ 3.000,00">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="finalidadeCompras">Finalidade das compras</label>
+                        <input type="text" id="finalidadeCompras">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="prazoPagamento">Prazo de pagamento pretendido</label>
+                            <input type="text" id="prazoPagamento" placeholder="Ex: 30/60 dias">
+                        </div>
+                        <div class="form-group">
+                            <label for="formaPagamento">Forma de pagamento habitual</label>
+                            <input type="text" id="formaPagamento" placeholder="Ex: Boleto, Pix, Cartão">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- 3. REFERÊNCIAS COMERCIAIS -->
+                <fieldset class="ficha-secao">
+                    <legend><span class="secao-numero">3</span> Referências Comerciais — Fornecedores Atuais</legend>
+                    <p class="section-subtitle">Informe preferencialmente 3 empresas que já vendem para sua empresa e que possam confirmar seu histórico comercial.</p>
+
+                    <div id="referenciasContainer"></div>
+                </fieldset>
+
+                <!-- 4. HISTÓRICO DE PAGAMENTO -->
+                <fieldset class="ficha-secao">
+                    <legend><span class="secao-numero">4</span> Informações sobre o Histórico de Pagamento</legend>
+
+                    <div class="pergunta-sim-nao">
+                        <label>A empresa possui atualmente compras faturadas com outros fornecedores? *</label>
+                        <div class="opcoes-sim-nao">
+                            <label><input type="radio" name="possuiComprasFaturadas" value="sim" required> Sim</label>
+                            <label><input type="radio" name="possuiComprasFaturadas" value="nao"> Não</label>
+                        </div>
+                    </div>
+
+                    <div class="pergunta-sim-nao">
+                        <label>Já houve atrasos relevantes em pagamentos a fornecedores? *</label>
+                        <div class="opcoes-sim-nao">
+                            <label><input type="radio" name="atrasosRelevantes" value="sim" required> Sim</label>
+                            <label><input type="radio" name="atrasosRelevantes" value="nao"> Não</label>
+                        </div>
+                    </div>
+
+                    <div class="pergunta-sim-nao">
+                        <label>Existem protestos, restrições ou pendências financeiras relevantes? *</label>
+                        <div class="opcoes-sim-nao">
+                            <label><input type="radio" name="protestosPendencias" value="sim" required> Sim</label>
+                            <label><input type="radio" name="protestosPendencias" value="nao"> Não</label>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- 5. DOCUMENTOS -->
+                <fieldset class="ficha-secao">
+                    <legend><span class="secao-numero">5</span> Documentos para Análise</legend>
+                    <p class="section-subtitle">Anexe os documentos abaixo (foto ou PDF). Você pode enviar mesmo sem ter todos em mãos agora.</p>
+
+                    <div class="file-upload-grid">
+                        <div class="file-upload">
+                            <input type="file" id="docCartaoCnpj" accept=".pdf,image/*" class="file-input-oculto">
+                            <label for="docCartaoCnpj" class="file-upload-label">
+                                <span class="file-upload-icon">📎</span>
+                                <span class="file-upload-texto">
+                                    <strong>Cartão CNPJ</strong>
+                                    <span class="file-upload-nome">Nenhum arquivo selecionado</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="file-upload">
+                            <input type="file" id="docContratoSocial" accept=".pdf,image/*" class="file-input-oculto">
+                            <label for="docContratoSocial" class="file-upload-label">
+                                <span class="file-upload-icon">📎</span>
+                                <span class="file-upload-texto">
+                                    <strong>Contrato social / última alteração</strong>
+                                    <span class="file-upload-nome">Nenhum arquivo selecionado</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="file-upload">
+                            <input type="file" id="docDocumentoResponsavel" accept=".pdf,image/*" class="file-input-oculto">
+                            <label for="docDocumentoResponsavel" class="file-upload-label">
+                                <span class="file-upload-icon">📎</span>
+                                <span class="file-upload-texto">
+                                    <strong>Documento do responsável legal</strong>
+                                    <span class="file-upload-nome">Nenhum arquivo selecionado</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="file-upload">
+                            <input type="file" id="docComprovanteEndereco" accept=".pdf,image/*" class="file-input-oculto">
+                            <label for="docComprovanteEndereco" class="file-upload-label">
+                                <span class="file-upload-icon">📎</span>
+                                <span class="file-upload-texto">
+                                    <strong>Comprovante de endereço</strong>
+                                    <span class="file-upload-nome">Nenhum arquivo selecionado</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="file-upload">
+                            <input type="file" id="docDadosBancarios" accept=".pdf,image/*" class="file-input-oculto">
+                            <label for="docDadosBancarios" class="file-upload-label">
+                                <span class="file-upload-icon">📎</span>
+                                <span class="file-upload-texto">
+                                    <strong>Dados bancários</strong>
+                                    <span class="file-upload-nome">Nenhum arquivo selecionado</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- 6. AUTORIZAÇÃO -->
+                <fieldset class="ficha-secao">
+                    <legend><span class="secao-numero">6</span> Autorização</legend>
+                    <p class="texto-autorizacao">Declaro que as informações prestadas nesta ficha são verdadeiras e autorizo a Precisa Elétrica a entrar em contato com as referências comerciais informadas para confirmação de dados cadastrais, condições comerciais e histórico de relacionamento, exclusivamente para fins de análise cadastral e de crédito.</p>
+
+                    <div class="form-group">
+                        <label for="nomeResponsavelAutorizacao">Nome do responsável (assinatura) *</label>
+                        <input type="text" id="nomeResponsavelAutorizacao" required placeholder="Digite seu nome completo como assinatura">
+                    </div>
+
+                    <label class="checkbox-aceite">
+                        <input type="checkbox" id="aceiteAutorizacao" required>
+                        Li e concordo com os termos acima.
+                    </label>
+                </fieldset>
+
+                <button type="submit" class="btn-submit" id="btnCadastrar">Enviar Ficha de Cadastro</button>
+            </form>
+        </section>
+    </main>
+
+    <div id="toast-container"></div>
+
+    <footer class="footer-precisa">
+        <div class="footer-bottom">
+            <p>&copy; 2026 Precisa Elétrica. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../script/cadastro-cliente.js"></script>
+</body>
+</html>
