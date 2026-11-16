@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Precisa Elétrica | Sua Base de Suprimentos</title>
+    <script src="script/config.js"></script>
     <link rel="stylesheet" href="style/style.css">
     <link rel="icon" type="image/png" href="img/favicon.png">
 </head>
@@ -16,7 +17,7 @@
         
         <nav class="main-menu-lista">
             <a href="index.html" class="ativo">Início</a>
-            <a href="html/catalogo.html">Produtos</a>
+            <a href="html/catalogo.html" data-loja="on">Produtos</a>
             <a href="html/about.html">A Empresa</a>
             <a href="html/contact.html">Localização</a>
         </nav>
@@ -28,7 +29,8 @@
         <div class="hero-conteudo">
             <h1 class="hero-titulo">SEU PARCEIRO EM <br><b>SOLUÇÕES ELÉTRICAS</b></h1>
             <p class="hero-subtitulo">As melhores soluções para obras residenciais, comerciais e industriais. As principais marcas do mercado com pronta entrega.</p>
-            <a href="html/catalogo.html" class="hero-botao">VER CATÁLOGO COMPLETO</a>
+            <a href="html/catalogo.html" class="hero-botao" data-loja="on">VER CATÁLOGO COMPLETO</a>
+            <a href="https://wa.me/5519998908218?text=Olá!%20Gostaria%20de%20solicitar%20um%20orçamento." class="hero-botao" data-loja="off" target="_blank" rel="noopener noreferrer">SOLICITE UM ORÇAMENTO</a>
         </div>
     </section>
 
@@ -160,7 +162,7 @@
                 <h3>Acesso Rápido</h3>
                 <ul class="footer-links">
                     <li><a href="../index.html">Início</a></li>
-                    <li><a href="html/catalogo.html">Catálogo de Produtos</a></li>
+                    <li data-loja="on"><a href="html/catalogo.html">Catálogo de Produtos</a></li>
                     <li><a href="html/about.html">A Empresa</a></li>
                     <li><a href="html/contact.html">Nossa Localização</a></li>
                 </ul>

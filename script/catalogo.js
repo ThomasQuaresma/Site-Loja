@@ -5,6 +5,8 @@ let clienteDB = null;
 let todosProdutos = [];
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Loja desligada em script/config.js: não conecta no Supabase.
+    if (!window.SITE_CONFIG || !window.SITE_CONFIG.lojaOnline) return;
     try {
         if (window.supabase) {
             clienteDB = window.supabase.createClient(supabaseUrl, supabaseKey);
